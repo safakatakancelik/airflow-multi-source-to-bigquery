@@ -1,0 +1,11 @@
+# Extra packages baked into the Airflow image (see Dockerfile).
+# Airflow itself and its pinned dependencies come from the base image.
+apache-airflow-providers-google
+apache-airflow-providers-databricks
+apache-airflow-providers-postgres
+apache-airflow-providers-mongo
+apache-airflow-providers-http
+pandas
+pyarrow
+PyYAML
+requests

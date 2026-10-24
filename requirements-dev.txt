@@ -1,0 +1,4 @@
+# Local development / CI. Airflow itself is installed separately with the
+# official constraints file (see README and .github/workflows/ci.yml).
+pytest
+ruff
