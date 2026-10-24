@@ -54,12 +54,13 @@ sources:
     transform:
       cast: {founded_year: int}
 
-  # 5. Google Sheets (all values arrive as strings, so casts matter) ------------------------
-  - name: sheets_skills_demand
-    type: google_sheets
-    conn_id: google_cloud_default
-    spreadsheet_id: ${SHEETS_SPREADSHEET_ID}
-    range: Sheet1!A:E
+  # 5. Amazon S3 (object storage; casts needed because CSV types are inferred loosely) ----
+  - name: s3_skills_demand
+    type: s3_file
+    conn_id: aws_default
+    bucket: ${S3_BUCKET}
+    object_key: ${S3_OBJECT_KEY:-ingest-demo/skills_demand.csv}
+    format: csv
     key: [skill]
     transform:
       cast: {demand_score: float, updated_on: date}

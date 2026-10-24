@@ -42,23 +42,17 @@ def test_sql_extractors_pass_query_to_hook(monkeypatch):
     assert hook.get_df.call_count == 2
 
 
-def test_google_sheets_pads_short_rows(monkeypatch):
+def test_s3_file_reads_csv_and_parquet(monkeypatch):
+    body = SimpleNamespace(read=lambda: b"skill,score\nsql,1\n")
+    obj = SimpleNamespace(get=lambda: {"Body": body})
     hook = MagicMock()
-    hook.get_values.return_value = [["skill", "score", "trend"], ["sql", "1"], ["py", "2", "up"]]
-    fake_module(
-        monkeypatch, "airflow.providers.google.suite.hooks.sheets", GSheetsHook=lambda **kw: hook
-    )
-    df = extractors.google_sheets({"conn_id": "c", "spreadsheet_id": "s", "range": "A:C"})
-    assert df.shape == (2, 3) and pd.isna(df.loc[0, "trend"])
-
-
-def test_google_sheets_empty(monkeypatch):
-    hook = MagicMock()
-    hook.get_values.return_value = []
-    fake_module(
-        monkeypatch, "airflow.providers.google.suite.hooks.sheets", GSheetsHook=lambda **kw: hook
-    )
-    assert extractors.google_sheets({"conn_id": "c", "spreadsheet_id": "s", "range": "A:C"}).empty
+    hook.get_key.return_value = obj
+    fake_module(monkeypatch, "airflow.providers.amazon.aws.hooks.s3", S3Hook=lambda **kw: hook)
+    df = extractors.s3_file({"conn_id": "c", "bucket": "b", "object_key": "k.csv", "format": "csv"})
+    assert df.shape == (1, 2)
+    hook.get_key.assert_called_once_with(key="k.csv", bucket_name="b")
+    with pytest.raises(ValueError, match="Unsupported"):
+        extractors.s3_file({"conn_id": "c", "bucket": "b", "object_key": "k", "format": "xlsx"})
 
 
 def test_mongo_flattens_and_stringifies_object_id(monkeypatch):

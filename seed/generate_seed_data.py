@@ -5,7 +5,7 @@
 Writes:
   data/city_cost_of_living.csv     -> served over HTTPS from the repo (raw.githubusercontent.com)
   seed/mongo_companies.json        -> load with seed/load_mongo.py
-  seed/sheets_skills_demand.csv    -> import into a new Google Sheet (File > Import)
+  seed/s3_skills_demand.csv        -> upload to your S3 bucket
   seed/supabase_seed.sql           -> run in the Supabase SQL editor
 """
 
@@ -133,7 +133,7 @@ def write_companies() -> None:
 
 
 def write_skills() -> None:
-    with open(ROOT / "seed" / "sheets_skills_demand.csv", "w", newline="") as fh:
+    with open(ROOT / "seed" / "s3_skills_demand.csv", "w", newline="") as fh:
         w = csv.writer(fh)
         w.writerow(["skill", "category", "demand_score", "trend", "updated_on"])
         for skill, cat in SKILLS:

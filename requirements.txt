@@ -5,6 +5,7 @@ apache-airflow-providers-databricks
 apache-airflow-providers-postgres
 apache-airflow-providers-mongo
 apache-airflow-providers-http
+apache-airflow-providers-amazon
 pandas
 pyarrow
 PyYAML

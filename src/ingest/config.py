@@ -24,7 +24,7 @@ REQUIRED_OPTIONS: dict[str, list[str]] = {
     "rest_api": ["conn_id", "endpoint"],
     "postgres": ["conn_id", "query"],
     "mongo": ["conn_id", "database", "collection"],
-    "google_sheets": ["conn_id", "spreadsheet_id", "range"],
+    "s3_file": ["conn_id", "bucket", "object_key", "format"],
     "http_file": ["url", "format"],
 }
 

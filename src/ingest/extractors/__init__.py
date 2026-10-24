@@ -48,18 +48,14 @@ def mongo(opts: dict[str, Any]) -> pd.DataFrame:
     return pd.json_normalize(docs, sep=".")
 
 
-def google_sheets(opts: dict[str, Any]) -> pd.DataFrame:
-    from airflow.providers.google.suite.hooks.sheets import GSheetsHook
-
-    hook = GSheetsHook(gcp_conn_id=opts["conn_id"])
-    values = hook.get_values(spreadsheet_id=opts["spreadsheet_id"], range_=opts["range"])
-    if not values:
-        return pd.DataFrame()
-    header, *rows = values
-    width = len(header)
-    # The Sheets API drops trailing empty cells, so pad every row to the header width.
-    rows = [(row + [None] * width)[:width] for row in rows]
-    return pd.DataFrame(rows, columns=header)
+def _read_bytes(content: bytes, fmt: str) -> pd.DataFrame:
+    buffer = io.BytesIO(content)
+    fmt = fmt.lower()
+    if fmt == "csv":
+        return pd.read_csv(buffer)
+    if fmt == "parquet":
+        return pd.read_parquet(buffer)
+    raise ValueError(f"Unsupported file format {fmt!r} (use csv or parquet)")
 
 
 def http_file(opts: dict[str, Any]) -> pd.DataFrame:
@@ -67,13 +63,17 @@ def http_file(opts: dict[str, Any]) -> pd.DataFrame:
 
     response = requests.get(opts["url"], timeout=60)
     response.raise_for_status()
-    buffer = io.BytesIO(response.content)
-    fmt = opts["format"].lower()
-    if fmt == "csv":
-        return pd.read_csv(buffer)
-    if fmt == "parquet":
-        return pd.read_parquet(buffer)
-    raise ValueError(f"Unsupported http_file format {fmt!r} (use csv or parquet)")
+    return _read_bytes(response.content, opts["format"])
+
+
+def s3_file(opts: dict[str, Any]) -> pd.DataFrame:
+    """Read one CSV/Parquet object. S3-compatible stores (MinIO, R2) work via the connection's
+    ``endpoint_url`` extra."""
+    from airflow.providers.amazon.aws.hooks.s3 import S3Hook
+
+    hook = S3Hook(aws_conn_id=opts["conn_id"])
+    obj = hook.get_key(key=opts["object_key"], bucket_name=opts["bucket"])
+    return _read_bytes(obj.get()["Body"].read(), opts["format"])
 
 
 def rest_api(opts: dict[str, Any]) -> pd.DataFrame:
@@ -106,7 +106,7 @@ EXTRACTORS: dict[str, Extractor] = {
     "databricks_sql": databricks_sql,
     "postgres": postgres,
     "mongo": mongo,
-    "google_sheets": google_sheets,
+    "s3_file": s3_file,
     "http_file": http_file,
     "rest_api": rest_api,
 }
