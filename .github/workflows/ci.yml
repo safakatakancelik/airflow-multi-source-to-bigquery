@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+env:
+  AIRFLOW_VERSION: "3.3.2"
+  PYTHON_VERSION: "3.13"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            requirements-dev.txt
+
+      # Same Airflow + constraints as the Docker image, so CI tests what actually runs.
+      - name: Install Airflow, providers and dev tools
+        run: |
+          pip install "apache-airflow==${AIRFLOW_VERSION}" \
+            -r requirements.txt -r requirements-dev.txt \
+            --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-${AIRFLOW_VERSION}/constraints-${PYTHON_VERSION}.txt"
+
+      - name: Lint
+        run: |
+          ruff check .
+          ruff format --check .
+
+      - name: Tests (config, transforms, quality rules, extractors, DAG integrity)
+        run: pytest -q
