@@ -1,0 +1,72 @@
+# One entry per source. The DAG builds an identical task group for each:
+#   extract -> transform -> load_staging -> quality_check -> publish
+#
+# ${VAR} / ${VAR:-default} are read from the environment (.env) when a task runs.
+# Connection ids refer to Airflow Connections (see .env.example), never to inline secrets.
+#
+# `key` lists the column(s) that must be non-NULL and unique. In `transform`, drop / rename / cast
+# use snake_case column names (every column is snake_cased first).
+
+destination:
+  gcp_conn_id: google_cloud_default
+  project: ${GCP_PROJECT_ID}
+  dataset: ${BQ_DATASET:-ingest_demo}
+  location: ${BQ_LOCATION:-US}
+  staging_expiration_days: 7
+
+sources:
+  # 1. Databricks (Delta table in your lakehouse) ------------------------------------------
+  - name: databricks_job_postings
+    type: databricks_sql
+    conn_id: databricks_default
+    http_path: ${DATABRICKS_HTTP_PATH}
+    query: SELECT * FROM ${DATABRICKS_SOURCE_TABLE} LIMIT 5000
+    key: []   # set to the table's primary key column(s) to enable NULL/duplicate-key checks
+
+  # 2. Public REST API (no auth, follows the `next` link across pages) ----------------------
+  - name: pokeapi_pokemon
+    type: rest_api
+    conn_id: public_api_pokeapi
+    endpoint: /api/v2/pokemon
+    params: {limit: 50}
+    records_path: results
+    next_path: next
+    max_pages: 3
+    key: [name]
+
+  # 3. Supabase (Postgres, relational join) -------------------------------------------------
+  - name: supabase_job_postings
+    type: postgres
+    conn_id: supabase_default
+    query: |
+      SELECT p.id, p.title, p.seniority, p.salary_min, p.salary_max, p.remote, p.posted_at,
+             e.name AS employer_name, e.industry, e.hq_city
+      FROM job_postings p JOIN employers e ON e.id = p.employer_id
+    key: [id]
+
+  # 4. MongoDB Atlas (nested documents) -----------------------------------------------------
+  - name: mongo_companies
+    type: mongo
+    conn_id: mongo_default
+    database: ${MONGO_DATABASE:-ingest_demo}
+    collection: companies
+    key: [id]
+    transform:
+      cast: {founded_year: int}
+
+  # 5. Google Sheets (all values arrive as strings, so casts matter) ------------------------
+  - name: sheets_skills_demand
+    type: google_sheets
+    conn_id: google_cloud_default
+    spreadsheet_id: ${SHEETS_SPREADSHEET_ID}
+    range: Sheet1!A:E
+    key: [skill]
+    transform:
+      cast: {demand_score: float, updated_on: date}
+
+  # 6. CSV file served over HTTPS (raw.githubusercontent.com) -------------------------------
+  - name: https_city_costs
+    type: http_file
+    url: ${SAMPLE_CSV_URL}
+    format: csv
+    key: [city]
