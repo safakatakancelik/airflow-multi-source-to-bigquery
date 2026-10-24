@@ -3,15 +3,13 @@
     python seed/generate_seed_data.py
 
 Writes:
-  data/city_cost_of_living.csv     -> served over HTTPS from the repo (raw.githubusercontent.com)
   seed/mongo_companies.json        -> load with seed/load_mongo.py
-  seed/s3_skills_demand.csv        -> upload to your S3 bucket
+  seed/s3_skills_demand.parquet    -> upload to your S3 bucket
   seed/supabase_seed.sql           -> run in the Supabase SQL editor
 """
 
 from __future__ import annotations
 
-import csv
 import json
 import random
 from pathlib import Path
@@ -76,36 +74,6 @@ SENIORITY = ["junior", "mid", "senior", "lead"]
 TITLES = ["Data Engineer", "Analytics Engineer", "Data Analyst", "ML Engineer", "Platform Engineer"]
 
 
-def write_cities() -> None:
-    path = ROOT / "data" / "city_cost_of_living.csv"
-    path.parent.mkdir(exist_ok=True)
-    with open(path, "w", newline="") as fh:
-        w = csv.writer(fh)
-        w.writerow(
-            [
-                "City",
-                "Country",
-                "Population (millions)",
-                "Avg Rent USD",
-                "Avg Salary USD",
-                "Internet Mbps",
-                "Last Updated",
-            ]
-        )
-        for city, country in CITIES:
-            w.writerow(
-                [
-                    city,
-                    country,
-                    round(rng.uniform(0.4, 15.0), 2),
-                    rng.randrange(600, 3200, 50),
-                    rng.randrange(18000, 110000, 500),
-                    rng.randrange(40, 400, 5),
-                    "2026-10-01",
-                ]
-            )
-
-
 def write_companies() -> None:
     docs = []
     for i in range(1, 26):
@@ -133,19 +101,19 @@ def write_companies() -> None:
 
 
 def write_skills() -> None:
-    with open(ROOT / "seed" / "s3_skills_demand.csv", "w", newline="") as fh:
-        w = csv.writer(fh)
-        w.writerow(["skill", "category", "demand_score", "trend", "updated_on"])
-        for skill, cat in SKILLS:
-            w.writerow(
-                [
-                    skill,
-                    cat,
-                    round(rng.uniform(20, 98), 1),
-                    rng.choice(["up", "flat", "down"]),
-                    "2026-10-01",
-                ]
-            )
+    import pandas as pd  # only needed for the Parquet seed file
+
+    rows = [
+        {
+            "skill": skill,
+            "category": cat,
+            "demand_score": round(rng.uniform(20, 98), 1),
+            "trend": rng.choice(["up", "flat", "down"]),
+            "updated_on": "2026-10-01",  # stored as text on purpose; the pipeline casts it to DATE
+        }
+        for skill, cat in SKILLS
+    ]
+    pd.DataFrame(rows).to_parquet(ROOT / "seed" / "s3_skills_demand.parquet", index=False)
 
 
 def write_supabase_sql() -> None:
@@ -174,7 +142,6 @@ def write_supabase_sql() -> None:
 
 
 if __name__ == "__main__":
-    write_cities()
     write_companies()
     write_skills()
     write_supabase_sql()

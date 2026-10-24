@@ -54,20 +54,22 @@ sources:
     transform:
       cast: {founded_year: int}
 
-  # 5. Amazon S3 (object storage; casts needed because CSV types are inferred loosely) ----
+  # 5. Amazon S3 (object storage; a Parquet object in your own bucket) ----
   - name: s3_skills_demand
     type: s3_file
     conn_id: aws_default
     bucket: ${S3_BUCKET}
-    object_key: ${S3_OBJECT_KEY:-ingest-demo/skills_demand.csv}
-    format: csv
+    object_key: ${S3_OBJECT_KEY:-ingest-demo/skills_demand.parquet}
+    format: parquet
     key: [skill]
     transform:
       cast: {demand_score: float, updated_on: date}
 
-  # 6. CSV file served over HTTPS (raw.githubusercontent.com) -------------------------------
-  - name: https_city_costs
+  # 6. Public CSV over HTTPS (S&P 500 constituents, public domain) -----------------------
+  - name: https_sp500_companies
     type: http_file
-    url: ${SAMPLE_CSV_URL}
+    url: ${HTTPS_CSV_URL:-https://raw.githubusercontent.com/datasets/s-and-p-500-companies/main/data/constituents.csv}
     format: csv
-    key: [city]
+    key: [symbol]
+    transform:
+      cast: {date_added: date, cik: int}

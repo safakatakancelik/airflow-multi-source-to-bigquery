@@ -1,71 +1,259 @@
 [
   {
     "_id": "co_001",
-    "name": "Orbit Analytics 1",
-    "foundedYear": 2011,
-    "industry": "gaming",
+    "name": "Quanta Labs 1",
+    "foundedYear": 2021,
+    "industry": "media",
     "address": {
-      "city": "Seoul",
-      "country": "South Korea"
+      "city": "Sao Paulo",
+      "country": "Brazil"
     },
     "tags": [
-      "hiring",
-      "open-source"
+      "hiring"
     ],
     "funding": {
-      "totalUsdMillions": 127.4,
+      "totalUsdMillions": 34.9,
       "rounds": 0
     },
-    "employeeCount": 12
+    "employeeCount": 2400
   },
   {
     "_id": "co_002",
-    "name": "Verdant Systems 2",
-    "foundedYear": 2023,
-    "industry": "gaming",
+    "name": "Quanta Analytics 2",
+    "foundedYear": 2011,
+    "industry": "fintech",
     "address": {
-      "city": "Warsaw",
-      "country": "Poland"
+      "city": "Cape Town",
+      "country": "South Africa"
     },
     "tags": [
-      "remote-first",
-      "profitable",
-      "b2b"
+      "remote-first"
     ],
     "funding": {
-      "totalUsdMillions": 149.0,
-      "rounds": 3
+      "totalUsdMillions": 54.7,
+      "rounds": 4
     },
     "employeeCount": 900
   },
   {
     "_id": "co_003",
-    "name": "Nimbus Labs 3",
-    "foundedYear": 2019,
-    "industry": "media",
+    "name": "Helix Analytics 3",
+    "foundedYear": 2011,
+    "industry": "logistics",
     "address": {
-      "city": "Vienna",
-      "country": "Austria"
+      "city": "Istanbul",
+      "country": "Turkey"
     },
     "tags": [
-      "series-a",
-      "remote-first",
-      "open-source"
+      "b2b",
+      "series-a"
     ],
     "funding": {
-      "totalUsdMillions": 108.7,
+      "totalUsdMillions": 202.4,
+      "rounds": 0
+    },
+    "employeeCount": 45
+  },
+  {
+    "_id": "co_004",
+    "name": "Cobalt Works 4",
+    "foundedYear": 2006,
+    "industry": "retail",
+    "address": {
+      "city": "Bangalore",
+      "country": "India"
+    },
+    "tags": [
+      "series-a"
+    ],
+    "funding": {
+      "totalUsdMillions": 25.6,
       "rounds": 3
     },
     "employeeCount": 12
   },
   {
-    "_id": "co_004",
-    "name": "Orbit Analytics 4",
-    "foundedYear": 2022,
+    "_id": "co_005",
+    "name": "Lumen Analytics 5",
+    "foundedYear": 2006,
+    "industry": "fintech",
+    "address": {
+      "city": "Athens",
+      "country": "Greece"
+    },
+    "tags": [
+      "profitable",
+      "b2b",
+      "remote-first"
+    ],
+    "funding": {
+      "totalUsdMillions": 243.3,
+      "rounds": 3
+    },
+    "employeeCount": 12
+  },
+  {
+    "_id": "co_006",
+    "name": "Orbit Analytics 6",
+    "foundedYear": 2009,
+    "industry": "logistics",
+    "address": {
+      "city": "Seoul",
+      "country": "South Korea"
+    },
+    "tags": [
+      "remote-first",
+      "open-source",
+      "hiring"
+    ],
+    "funding": {
+      "totalUsdMillions": 193.3,
+      "rounds": 0
+    },
+    "employeeCount": 45
+  },
+  {
+    "_id": "co_007",
+    "name": "Cobalt Works 7",
+    "foundedYear": 2012,
+    "industry": "energy",
+    "address": {
+      "city": "Warsaw",
+      "country": "Poland"
+    },
+    "tags": [
+      "series-a"
+    ],
+    "funding": {
+      "totalUsdMillions": 88.8,
+      "rounds": 5
+    },
+    "employeeCount": 120
+  },
+  {
+    "_id": "co_008",
+    "name": "Quanta Analytics 8",
+    "foundedYear": 2018,
     "industry": "retail",
     "address": {
-      "city": "Cape Town",
-      "country": "South Africa"
+      "city": "Bangalore",
+      "country": "India"
+    },
+    "tags": [
+      "open-source",
+      "hiring",
+      "b2b"
+    ],
+    "funding": {
+      "totalUsdMillions": 115.6,
+      "rounds": 2
+    },
+    "employeeCount": 2400
+  },
+  {
+    "_id": "co_009",
+    "name": "Helix Works 9",
+    "foundedYear": 2022,
+    "industry": "fintech",
+    "address": {
+      "city": "Bangalore",
+      "country": "India"
+    },
+    "tags": [
+      "remote-first"
+    ],
+    "funding": {
+      "totalUsdMillions": 201.3,
+      "rounds": 3
+    },
+    "employeeCount": 120
+  },
+  {
+    "_id": "co_010",
+    "name": "Helix Analytics 10",
+    "foundedYear": 2020,
+    "industry": "energy",
+    "address": {
+      "city": "Lisbon",
+      "country": "Portugal"
+    },
+    "tags": [
+      "open-source"
+    ],
+    "funding": {
+      "totalUsdMillions": 124.8,
+      "rounds": 5
+    },
+    "employeeCount": 380
+  },
+  {
+    "_id": "co_011",
+    "name": "Orbit Systems 11",
+    "foundedYear": 2005,
+    "industry": "media",
+    "address": {
+      "city": "Amsterdam",
+      "country": "Netherlands"
+    },
+    "tags": [
+      "b2b",
+      "profitable",
+      "open-source"
+    ],
+    "funding": {
+      "totalUsdMillions": 90.5,
+      "rounds": 1
+    },
+    "employeeCount": 900
+  },
+  {
+    "_id": "co_012",
+    "name": "Quanta Labs 12",
+    "foundedYear": 2001,
+    "industry": "retail",
+    "address": {
+      "city": "Singapore",
+      "country": "Singapore"
+    },
+    "tags": [
+      "hiring",
+      "profitable",
+      "remote-first"
+    ],
+    "funding": {
+      "totalUsdMillions": 96.2,
+      "rounds": 4
+    },
+    "employeeCount": 380
+  },
+  {
+    "_id": "co_013",
+    "name": "Orbit Analytics 13",
+    "foundedYear": 1998,
+    "industry": "health",
+    "address": {
+      "city": "Tokyo",
+      "country": "Japan"
+    },
+    "tags": [
+      "b2b",
+      "series-a",
+      "open-source"
+    ],
+    "funding": {
+      "totalUsdMillions": 27.9,
+      "rounds": 3
+    },
+    "employeeCount": 45
+  },
+  {
+    "_id": "co_014",
+    "name": "Nimbus Works 14",
+    "foundedYear": 2014,
+    "industry": "retail",
+    "address": {
+      "city": "Denver",
+      "country": "USA"
     },
     "tags": [
       "remote-first",
@@ -79,8 +267,8 @@
     "employeeCount": 900
   },
   {
-    "_id": "co_005",
-    "name": "Nimbus Analytics 5",
+    "_id": "co_015",
+    "name": "Nimbus Analytics 15",
     "foundedYear": 2008,
     "industry": "education",
     "address": {
@@ -97,8 +285,8 @@
     "employeeCount": 45
   },
   {
-    "_id": "co_006",
-    "name": "Helix Analytics 6",
+    "_id": "co_016",
+    "name": "Helix Analytics 16",
     "foundedYear": 2000,
     "industry": "health",
     "address": {
@@ -117,8 +305,8 @@
     "employeeCount": 900
   },
   {
-    "_id": "co_007",
-    "name": "Orbit Analytics 7",
+    "_id": "co_017",
+    "name": "Orbit Analytics 17",
     "foundedYear": 2017,
     "industry": "gaming",
     "address": {
@@ -135,8 +323,8 @@
     "employeeCount": 45
   },
   {
-    "_id": "co_008",
-    "name": "Orbit Group 8",
+    "_id": "co_018",
+    "name": "Orbit Group 18",
     "foundedYear": 2019,
     "industry": "energy",
     "address": {
@@ -154,8 +342,8 @@
     "employeeCount": 12
   },
   {
-    "_id": "co_009",
-    "name": "Nimbus Analytics 9",
+    "_id": "co_019",
+    "name": "Nimbus Analytics 19",
     "foundedYear": 2015,
     "industry": "logistics",
     "address": {
@@ -174,8 +362,8 @@
     "employeeCount": 45
   },
   {
-    "_id": "co_010",
-    "name": "Nimbus Works 10",
+    "_id": "co_020",
+    "name": "Nimbus Works 20",
     "foundedYear": 2000,
     "industry": "logistics",
     "address": {
@@ -193,8 +381,8 @@
     "employeeCount": 2400
   },
   {
-    "_id": "co_011",
-    "name": "Atlas Systems 11",
+    "_id": "co_021",
+    "name": "Atlas Systems 21",
     "foundedYear": 2023,
     "industry": "education",
     "address": {
@@ -212,8 +400,8 @@
     "employeeCount": 120
   },
   {
-    "_id": "co_012",
-    "name": "Cobalt Group 12",
+    "_id": "co_022",
+    "name": "Cobalt Group 22",
     "foundedYear": 2021,
     "industry": "fintech",
     "address": {
@@ -232,8 +420,8 @@
     "employeeCount": 12
   },
   {
-    "_id": "co_013",
-    "name": "Helix Systems 13",
+    "_id": "co_023",
+    "name": "Helix Systems 23",
     "foundedYear": 2015,
     "industry": "education",
     "address": {
@@ -250,8 +438,8 @@
     "employeeCount": 45
   },
   {
-    "_id": "co_014",
-    "name": "Atlas Analytics 14",
+    "_id": "co_024",
+    "name": "Atlas Analytics 24",
     "foundedYear": 2001,
     "industry": "fintech",
     "address": {
@@ -270,8 +458,8 @@
     "employeeCount": 45
   },
   {
-    "_id": "co_015",
-    "name": "Atlas Group 15",
+    "_id": "co_025",
+    "name": "Atlas Group 25",
     "foundedYear": 2004,
     "industry": "gaming",
     "address": {
@@ -286,193 +474,5 @@
       "rounds": 3
     },
     "employeeCount": 120
-  },
-  {
-    "_id": "co_016",
-    "name": "Orbit Group 16",
-    "foundedYear": 2020,
-    "industry": "education",
-    "address": {
-      "city": "Denver",
-      "country": "USA"
-    },
-    "tags": [
-      "hiring"
-    ],
-    "funding": {
-      "totalUsdMillions": 74.2,
-      "rounds": 0
-    },
-    "employeeCount": 900
-  },
-  {
-    "_id": "co_017",
-    "name": "Nimbus Works 17",
-    "foundedYear": 1999,
-    "industry": "fintech",
-    "address": {
-      "city": "Cape Town",
-      "country": "South Africa"
-    },
-    "tags": [
-      "profitable",
-      "b2b",
-      "hiring"
-    ],
-    "funding": {
-      "totalUsdMillions": 14.2,
-      "rounds": 4
-    },
-    "employeeCount": 12
-  },
-  {
-    "_id": "co_018",
-    "name": "Quanta Analytics 18",
-    "foundedYear": 2000,
-    "industry": "logistics",
-    "address": {
-      "city": "Madrid",
-      "country": "Spain"
-    },
-    "tags": [
-      "remote-first",
-      "b2b"
-    ],
-    "funding": {
-      "totalUsdMillions": 61.6,
-      "rounds": 4
-    },
-    "employeeCount": 12
-  },
-  {
-    "_id": "co_019",
-    "name": "Quanta Group 19",
-    "foundedYear": 2019,
-    "industry": "energy",
-    "address": {
-      "city": "Dubai",
-      "country": "UAE"
-    },
-    "tags": [
-      "hiring",
-      "series-a"
-    ],
-    "funding": {
-      "totalUsdMillions": 59.7,
-      "rounds": 3
-    },
-    "employeeCount": 45
-  },
-  {
-    "_id": "co_020",
-    "name": "Orbit Group 20",
-    "foundedYear": 2008,
-    "industry": "health",
-    "address": {
-      "city": "Mexico City",
-      "country": "Mexico"
-    },
-    "tags": [
-      "profitable"
-    ],
-    "funding": {
-      "totalUsdMillions": 155.3,
-      "rounds": 4
-    },
-    "employeeCount": 12
-  },
-  {
-    "_id": "co_021",
-    "name": "Helix Analytics 21",
-    "foundedYear": 2006,
-    "industry": "retail",
-    "address": {
-      "city": "Lisbon",
-      "country": "Portugal"
-    },
-    "tags": [
-      "remote-first",
-      "hiring"
-    ],
-    "funding": {
-      "totalUsdMillions": 92.4,
-      "rounds": 1
-    },
-    "employeeCount": 380
-  },
-  {
-    "_id": "co_022",
-    "name": "Orbit Analytics 22",
-    "foundedYear": 2023,
-    "industry": "fintech",
-    "address": {
-      "city": "Seoul",
-      "country": "South Korea"
-    },
-    "tags": [
-      "b2b",
-      "series-a",
-      "remote-first"
-    ],
-    "funding": {
-      "totalUsdMillions": 234.7,
-      "rounds": 1
-    },
-    "employeeCount": 120
-  },
-  {
-    "_id": "co_023",
-    "name": "Quanta Analytics 23",
-    "foundedYear": 2002,
-    "industry": "media",
-    "address": {
-      "city": "Warsaw",
-      "country": "Poland"
-    },
-    "tags": [
-      "b2b",
-      "hiring"
-    ],
-    "funding": {
-      "totalUsdMillions": 179.4,
-      "rounds": 1
-    },
-    "employeeCount": 2400
-  },
-  {
-    "_id": "co_024",
-    "name": "Orbit Analytics 24",
-    "foundedYear": 2013,
-    "industry": "media",
-    "address": {
-      "city": "Sao Paulo",
-      "country": "Brazil"
-    },
-    "tags": [
-      "remote-first"
-    ],
-    "funding": {
-      "totalUsdMillions": 158.6,
-      "rounds": 2
-    },
-    "employeeCount": 12
-  },
-  {
-    "_id": "co_025",
-    "name": "Lumen Systems 25",
-    "foundedYear": 2018,
-    "industry": "media",
-    "address": {
-      "city": "Istanbul",
-      "country": "Turkey"
-    },
-    "tags": [
-      "open-source"
-    ],
-    "funding": {
-      "totalUsdMillions": 110.5,
-      "rounds": 5
-    },
-    "employeeCount": 380
   }
 ]
