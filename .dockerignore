@@ -1,0 +1,9 @@
+# Keep secrets and local state out of the Docker build context (and therefore out of any image).
+.env
+secrets/
+.venv/
+.git/
+logs/
+__pycache__/
+.pytest_cache/
+.ruff_cache/

@@ -1,7 +1,9 @@
 # One entry per source. The DAG builds an identical task group for each:
 #   extract -> transform -> load_staging -> quality_check -> publish
 #
-# ${VAR} / ${VAR:-default} are read from the environment (.env) when a task runs.
+# This file is safe to publish: it holds structure only. Every environment-specific value (project
+# ids, hosts, bucket names, table names) is a ${VAR} / ${VAR:-default} read from the environment
+# (.env, git-ignored) when a task runs. tests/test_no_secrets.py enforces this.
 # Connection ids refer to Airflow Connections (see .env.example), never to inline secrets.
 #
 # `key` lists the column(s) that must be non-NULL and unique. In `transform`, drop / rename / cast
@@ -49,7 +51,7 @@ sources:
     type: mongo
     conn_id: mongo_default
     database: ${MONGO_DATABASE:-ingest_demo}
-    collection: companies
+    collection: ${MONGO_COLLECTION:-companies}
     key: [id]
     transform:
       cast: {founded_year: int}

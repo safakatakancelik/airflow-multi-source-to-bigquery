@@ -58,6 +58,15 @@ About 3 GB of free RAM while Airflow runs.
 - **Assets** — each `publish` task declares an Airflow Asset, so the lineage is visible in the UI.
 - **Testable core** — the pipeline logic is plain Python in [`src/ingest`](src/ingest) with Airflow imports kept inside the functions that need them, so most of it is unit-tested with no Airflow, credentials or network.
 
+## Configuration & secrets
+
+Nothing environment-specific or secret is in the repository.
+
+- [`config/sources.yaml`](config/sources.yaml) describes *structure only*. Every project id, host, bucket and table name is a `${VAR}` placeholder resolved from the environment when a task runs.
+- Credentials are Airflow Connections defined as `AIRFLOW_CONN_*` variables.
+- Both live in **`.env`**, which is git-ignored and excluded from the Docker build context. [`.env.example`](.env.example) is the committed template with placeholders only.
+- `tests/test_no_secrets.py` runs in CI and fails if a credential-shaped string is committed, if `.env` or a key file becomes tracked, or if a literal project/bucket/host value appears in the config.
+
 ## Tests & CI
 
 ```bash
@@ -77,12 +86,14 @@ ordered task group per configured source, retries set, asset outlets present).
 ### What I need from you
 
 1. ~~Create the GitHub repo~~ — done. The public-CSV source needs no setup.
-2. Fill in `.env` for each connection (see `.env.example`). Put the Google service-account key at `secrets/gcp-sa.json`
-   (roles: BigQuery Data Editor + BigQuery Job User).
-3. Set `key:` for the Databricks source in `config/sources.yaml`. It is empty because the table's primary key
-   isn't known, so the NULL/duplicate-key checks are skipped until it is set.
+2. Run `./scripts/init-env.sh`, then put **all** your real values in `.env` (git-ignored): GCP project id, Databricks
+   host/token/warehouse path/table, Supabase, Mongo, S3 bucket and keys — see `.env.example` for every variable. Put the Google
+   service-account key at `secrets/gcp-sa.json` (also git-ignored; roles: BigQuery Data Editor + BigQuery Job User).
+   Never edit real values into `config/sources.yaml`; the tests will fail if you do.
+3. Set `key:` (a column name, not a secret) for the Databricks source in `config/sources.yaml`. It is empty because the
+   table's primary key isn't known, so the NULL/duplicate-key checks are skipped until it is set.
 4. Give me the Databricks table name and the Supabase table layout if you build your own — the Supabase
-   query currently matches the seed schema in `seed/supabase_seed.sql`.
+   query currently matches the seed schema in `seed/supabase_seed.sql` (table names are not secrets, so editing that query is fine).
 5. Create the S3 bucket + an IAM user with read access, and upload the seed Parquet file (see below).
 
 ### Not yet verified
