@@ -64,28 +64,124 @@ docker-compose.yaml        Airflow with LocalExecutor and Postgres (version pinn
 | Python and [uv](https://docs.astral.sh/uv/) | 3.13 | only to run the tests or seed scripts outside Docker |
 | Accounts | | Google Cloud (BigQuery), Supabase, MongoDB Atlas, AWS (S3) |
 
-## Quick start
+## Setup guide
 
-1. **Clone and create `.env`.** The script copies `.env.example` to `.env` and generates the local Airflow secrets:
-   ```bash
-   git clone https://github.com/safakatakancelik/airflow-multi-source-to-bigquery.git
-   cd airflow-multi-source-to-bigquery
-   ./scripts/init-env.sh
-   ```
-2. **BigQuery.** Create a Google Cloud project and a service account with the *BigQuery Data Editor* and *BigQuery Job User* roles. Save its JSON key as `secrets/gcp-sa.json`, then set `GCP_PROJECT_ID` and the connection in `.env`.
-3. **Seed and connect the sources** (each connection is a line in `.env`; see `.env.example`):
-   - **Supabase:** run [`seed/supabase_seed.sql`](seed/supabase_seed.sql) in the SQL editor. Use the *Session pooler* connection details.
-   - **MongoDB Atlas:** `MONGO_URI='mongodb+srv://USER:PASS@HOST/' uv run --with pymongo python seed/load_mongo.py`
-   - **Amazon S3:** upload [`seed/s3_song_streams.parquet`](seed/s3_song_streams.parquet) to `s3://<your-bucket>/ingest-demo/song_streams.parquet` and give an IAM user read access to it.
-   - **PokeAPI and the public CSV:** nothing to set up.
-4. **Start Airflow:**
-   ```bash
-   docker compose up airflow-init
-   docker compose up -d
-   ```
-5. Open http://localhost:8080 (user `airflow`, password printed by `init-env.sh` and stored in `.env`), unpause `ingest_all_sources` and click **Trigger**.
+Everything here uses free tiers. Allow about 45 minutes the first time. Run every `docker compose` command from the repository root.
 
-Stop with `docker compose down` (add `-v` to also wipe Airflow's metadata database).
+### 1. Clone and create `.env`
+
+```bash
+git clone https://github.com/safakatakancelik/airflow-multi-source-to-bigquery.git
+cd airflow-multi-source-to-bigquery
+./scripts/init-env.sh
+```
+
+`init-env.sh` copies [`.env.example`](.env.example) to `.env` and generates the local Airflow secrets and the Airflow UI password (printed once, also stored in `.env`). Every credential in the next steps goes into `.env`, which is git-ignored.
+
+### 2. Google Cloud (BigQuery)
+
+1. Create a Google Cloud project, or pick an existing one. The BigQuery API is enabled by default on new projects.
+2. **IAM & Admin → Service accounts → Create service account.** Grant it two roles: **BigQuery Data Editor** (creates the dataset and tables and writes to them) and **BigQuery Job User** (runs load and query jobs).
+3. Open the service account → **Keys → Add key → Create new key → JSON**. Save the file as `secrets/gcp-sa.json`. The `secrets/` folder is git-ignored and mounted read-only into the containers.
+4. In `.env`, set `GCP_PROJECT_ID` and the same project id inside `AIRFLOW_CONN_GOOGLE_CLOUD_DEFAULT` (the `project` field).
+
+The pipeline stores a few hundred rows and runs a handful of small queries, well inside BigQuery's monthly free tier.
+
+### 3. Supabase (PostgreSQL)
+
+1. Create a project and choose a **database password**. This is not your Supabase account password. If you forget it, reset it under *Project Settings → Database*.
+2. Open the **SQL Editor**, paste the contents of [`seed/supabase_seed.sql`](seed/supabase_seed.sql) and run it. It creates `genres` (8 rows), `artists` (20) and `songs` (100).
+3. Click **Connect** and copy the **Session pooler** details. Use the pooler, not the direct connection: the direct host (`db.<ref>.supabase.co`) only resolves over IPv6, which Docker usually can't reach.
+4. Fill in `AIRFLOW_CONN_SUPABASE_DEFAULT` in `.env`:
+
+   | Field | Value |
+   |---|---|
+   | `host` | the pooler host, like `aws-0-REGION.pooler.supabase.com` |
+   | `login` | `postgres.<project-ref>` (with the dot and the project ref, not just `postgres`) |
+   | `password` | the database password from step 1 |
+   | `port`, `schema` | `5432`, `postgres` |
+
+### 4. MongoDB Atlas
+
+1. Sign in at [cloud.mongodb.com](https://cloud.mongodb.com) and create a free **M0** cluster. No payment method is needed.
+2. **Security → Database & Network Access → Database Users → Add New Database User.** Choose password authentication with the role *Read and write to any database*. Use letters and digits only so the password needs no URL-encoding.
+3. **IP Access List → Add IP Address → Add Current IP Address.** Your IP changes between networks, so redo this when you move.
+4. Click **Connect → Drivers** on the cluster and copy the host, like `cluster0.xxxxx.mongodb.net`.
+5. Load the 30 playlist documents (the loader replaces the collection, so it is safe to re-run):
+
+   ```bash
+   MONGO_URI='mongodb+srv://USER:PASS@cluster0.xxxxx.mongodb.net/' uv run --with pymongo python seed/load_mongo.py
+   ```
+
+   It prints `Loaded 30 documents into ingest_demo.playlists`. Run this **before** the first DAG run, otherwise the Mongo source finds nothing to ingest.
+6. Fill in `AIRFLOW_CONN_MONGO_DEFAULT` in `.env`. The `host` is only the cluster host, without `mongodb+srv://` and without credentials. Keep `"extra":{"srv":true}`.
+
+### 5. Amazon S3
+
+The S3 source reads one Parquet file. Airflow authenticates as an IAM user, and that user must be allowed to read the file. The policy below gives it read access to a single bucket and nothing else, so a leaked key cannot write, delete or touch any other bucket.
+
+1. **S3 → Create bucket.** Choose a globally unique name and a region, and keep *Block all public access* on.
+2. Upload [`seed/s3_song_streams.parquet`](seed/s3_song_streams.parquet) to the path `ingest-demo/song_streams.parquet` inside the bucket:
+
+   ```bash
+   aws s3 cp seed/s3_song_streams.parquet s3://YOUR_BUCKET/ingest-demo/song_streams.parquet
+   ```
+
+   The web console's *Upload* button works too. To use another path, set `S3_OBJECT_KEY` in `.env`.
+3. **IAM → Policies → Create policy → JSON**, replacing `YOUR_BUCKET`:
+
+   ```json
+   {
+     "Version": "2012-10-17",
+     "Statement": [
+       {"Effect": "Allow", "Action": "s3:ListBucket", "Resource": "arn:aws:s3:::YOUR_BUCKET"},
+       {"Effect": "Allow", "Action": "s3:GetObject", "Resource": "arn:aws:s3:::YOUR_BUCKET/*"}
+     ]
+   }
+   ```
+
+   There are two statements because the two permissions apply to different resources: `s3:ListBucket` applies to the bucket itself, and `s3:GetObject` applies to the objects inside it (`/*`). Without `ListBucket`, S3 answers a request for a missing file with `AccessDenied` instead of `NoSuchKey`, which hides typos in the path. The managed `AmazonS3ReadOnlyAccess` policy also works, but it grants read access to every bucket in the account.
+4. **IAM → Users → Create user** (no console access), attach the policy, then **Security credentials → Create access key → Application running outside AWS**. Copy the key id and secret when they are shown, because the secret cannot be displayed again.
+5. In `.env`, set `S3_BUCKET` and fill in `AIRFLOW_CONN_AWS_DEFAULT` with `login` = access key id, `password` = secret key and `region_name` = the bucket's region.
+
+### 6. PokeAPI and the public CSV
+
+Nothing to set up. PokeAPI needs no credentials, and the CSV is fetched from a public URL.
+
+### 7. Start Airflow
+
+```bash
+docker compose up airflow-init
+docker compose up -d
+```
+
+Airflow reads `.env` when its containers start. After you change `.env`, apply it with:
+
+```bash
+docker compose up -d --force-recreate
+```
+
+### 8. Run it and check the result
+
+1. Open http://localhost:8080 and sign in as `airflow` with the password from step 1.
+2. DAGs are paused when created. Unpause `ingest_all_sources`, then click **Trigger**. All 27 tasks should turn green.
+3. In BigQuery, the dataset `ingest_demo` should now hold `stg_<source>` and `raw_<source>` tables for each source, plus `ingestion_audit`. Expected row counts: PokeAPI 150, Supabase 100, MongoDB 30, S3 200, CSV about 500.
+
+   ```sql
+   SELECT source, status, rows_extracted, rows_staged, failures
+   FROM `YOUR_PROJECT.ingest_demo.ingestion_audit`
+   ORDER BY recorded_at DESC;
+   ```
+
+### 9. Tear down
+
+Stop Airflow and remove its containers, volumes and images:
+
+```bash
+docker compose down -v --rmi all --remove-orphans
+```
+
+Then delete what you created in each service so nothing stays active: the S3 bucket and the IAM access key, user and policy; the Atlas database user, IP entry and cluster; the Supabase project; the Google Cloud service account and key, and the `ingest_demo` dataset.
 
 ## Engineering choices
 
@@ -110,6 +206,24 @@ Stop with `docker compose down` (add `-v` to also wipe Airflow's metadata databa
 - **No schema evolution.** If a source adds or renames a column, publishing into the existing `raw_*` table fails until the table is migrated.
 - **Single machine.** `LocalExecutor` shares local temp files between tasks. A multi-worker executor would need shared storage.
 - **Basic alerting.** The failure callback only writes to the task log.
+
+## Troubleshooting
+
+| Symptom | Cause and fix |
+|---|---|
+| `no configuration file provided: not found` | `docker compose` was run outside the repository root. `cd` into it first. |
+| A change to `.env` has no effect | Containers read `.env` only when they start. Run `docker compose up -d --force-recreate`. |
+| `The conn_id ... isn't defined` | The matching `AIRFLOW_CONN_<ID>` line is missing from `.env`, or its name is misspelled. A public API needs no connection: set `base_url` in `config/sources.yaml` instead. |
+| The DAG is missing, or shows an import error | Run `docker compose exec airflow-scheduler airflow dags list-import-errors`. |
+| The DAG does not start | New DAGs are paused. Unpause it, then trigger it. |
+| Supabase connection fails | Use the Session pooler host, not the IPv6-only direct host. The login is `postgres.<project-ref>`, and the password is the database password, not the account password. |
+| MongoDB: `SSL handshake failed ... TLSV1_ALERT_INTERNAL_ERROR` on every server | Atlas is refusing the connection before it checks credentials. This typically means your current IP is not in the Atlas IP Access List. Add it, and make sure `host` has no `mongodb+srv://` prefix. |
+| MongoDB source fails with 0 rows | The collection is empty. Run `seed/load_mongo.py` first. |
+| S3 `AccessDenied` | The IAM policy is missing `s3:ListBucket` or `s3:GetObject`, names the wrong bucket, or the object path is wrong. Without `ListBucket`, a wrong path also shows as `AccessDenied`. |
+| S3 `NoSuchKey`, or a region error | Check that `S3_OBJECT_KEY` matches the uploaded path exactly and that `region_name` matches the bucket's region. |
+| BigQuery `403` or permission errors | The service account lacks *BigQuery Data Editor* or *BigQuery Job User*, or `GCP_PROJECT_ID` differs from the `project` inside the connection. |
+| A `quality_check` task fails and is not retried | This is intended. Read the `failures` column in `ingestion_audit` for the reason (row-count mismatch, NULL or duplicate keys). |
+| Where are the task logs? | In the Airflow UI under the task's *Logs* tab, and in the local `logs/` folder. |
 
 ## Configuration & secrets
 
