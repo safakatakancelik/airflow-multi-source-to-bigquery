@@ -88,3 +88,15 @@ def test_cleanup_removes_run_directory(tmp_path, fake_extract):
     assert pipeline.run_dir("manual__2026:10:25", tmp_path).exists()
     pipeline.run_cleanup("manual__2026:10:25", tmp_path)
     assert not pipeline.run_dir("manual__2026:10:25", tmp_path).exists()
+
+
+def test_empty_source_fails_clearly(tmp_path, monkeypatch):
+    monkeypatch.setitem(pipeline.EXTRACTORS, "http_file", lambda opts: pd.DataFrame())
+    with pytest.raises(pipeline.DataQualityError, match="0 rows"):
+        pipeline.run_extract(SRC, run_id="r", root=tmp_path)
+
+
+@pytest.mark.parametrize("hostile", ["..", ".", "../..", "a/../../b", ""])
+def test_run_dir_never_escapes_the_staging_root(tmp_path, hostile):
+    resolved = pipeline.run_dir(hostile, tmp_path).resolve()
+    assert resolved.parent == tmp_path.resolve()

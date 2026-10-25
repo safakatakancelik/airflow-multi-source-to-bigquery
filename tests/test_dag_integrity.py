@@ -51,3 +51,9 @@ def test_publish_declares_an_asset_outlet(dag):
 
 def test_failure_callback_is_configured(dag):
     assert all(t.on_failure_callback for t in dag.tasks)
+
+
+def test_asset_names_have_no_unresolved_placeholders(dag):
+    for src in load_config().sources:
+        (outlet,) = dag.get_task(f"{src.name}.publish").outlets
+        assert "${" not in outlet.name

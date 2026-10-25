@@ -1,14 +1,10 @@
-# Lightweight Airflow 3 stack: LocalExecutor, so no Redis / Celery workers / triggerer.
-# Derived from the official docker-compose for Airflow 3.3.2, trimmed for a single-machine demo.
-#
-#   ./scripts/init-env.sh   # once: creates .env with generated secrets
-#   docker compose up airflow-init
-#   docker compose up -d
-#   open http://localhost:8080   (user / password from .env, default airflow / airflow)
+# Lightweight Airflow 3 stack for a single machine: LocalExecutor, so no Redis, Celery workers or
+# triggerer. Derived from the official Airflow docker-compose file.
+# The Airflow version is set once, in the Dockerfile.
 
 x-airflow-common: &airflow-common
   build: .
-  image: ingest-airflow:3.3.2
+  image: ingest-airflow
   env_file:
     - .env
   environment: &airflow-common-env
@@ -21,7 +17,7 @@ x-airflow-common: &airflow-common
     AIRFLOW__CORE__EXECUTION_API_SERVER_URL: http://airflow-apiserver:8080/execution/
     AIRFLOW__API_AUTH__JWT_SECRET: ${AIRFLOW__API_AUTH__JWT_SECRET}
     AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: "true"
-    # Our package (src/ingest) and its YAML config
+    # The ingest package (src/ingest) and its YAML config
     PYTHONPATH: /opt/airflow/src
     INGEST_CONFIG: /opt/airflow/config/sources.yaml
   volumes:
@@ -65,14 +61,14 @@ services:
       _AIRFLOW_DB_MIGRATE: "true"
       _AIRFLOW_WWW_USER_CREATE: "true"
       _AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME:-airflow}
-      _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-airflow}
+      _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:?run ./scripts/init-env.sh first}
     user: "0:0"
 
   airflow-apiserver:
     <<: *airflow-common
     command: api-server
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"  # local only; the UI is not exposed to the network
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:8080/api/v2/monitor/health"]
       interval: 30s

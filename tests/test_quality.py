@@ -8,7 +8,6 @@ def ok(**over):
         rows_staged=10,
         null_key_rows=0,
         duplicate_key_groups=0,
-        allow_empty=False,
     )
     return evaluate(**{**base, **over})
 
@@ -32,9 +31,3 @@ def test_null_and_duplicate_keys_fail():
 
 def test_no_key_configured_skips_key_checks():
     assert ok(null_key_rows=None, duplicate_key_groups=None).status == "passed"
-
-
-def test_empty_source_fails_unless_allowed():
-    empty = dict(rows_extracted=0, rows_transformed=0, rows_staged=0)
-    assert ok(**empty).status == "failed"
-    assert ok(**empty, allow_empty=True).status == "passed"

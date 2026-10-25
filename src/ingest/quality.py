@@ -29,13 +29,10 @@ def evaluate(
     rows_staged: int,
     null_key_rows: int | None,
     duplicate_key_groups: int | None,
-    allow_empty: bool,
 ) -> QualityReport:
     report = QualityReport(
         rows_extracted, rows_transformed, rows_staged, null_key_rows, duplicate_key_groups
     )
-    if rows_extracted == 0 and not allow_empty:
-        report.failures.append("source returned 0 rows (set allow_empty: true to permit this)")
     if rows_transformed != rows_extracted:
         report.failures.append(
             f"transform changed row count: extracted={rows_extracted} transformed={rows_transformed}"

@@ -54,7 +54,6 @@ class SourceConfig:
     type: str
     key: list[str] = field(default_factory=list)
     transform: dict[str, Any] = field(default_factory=dict)
-    allow_empty: bool = False
     options: dict[str, Any] = field(default_factory=dict)
 
     @property
@@ -111,15 +110,12 @@ def _parse_source(raw: dict[str, Any]) -> SourceConfig:
     key = raw.pop("key", [])
     key = [key] if isinstance(key, str) else list(key)
     transform = raw.pop("transform", {}) or {}
-    allow_empty = bool(raw.pop("allow_empty", False))
     missing = [opt for opt in REQUIRED_OPTIONS[stype] if opt not in raw]
     if missing:
         raise ConfigError(f"Source {name} ({stype}) is missing options: {missing}")
     if stype == "rest_api" and not (raw.get("base_url") or raw.get("conn_id")):
         raise ConfigError(f"Source {name} (rest_api) needs base_url (public API) or conn_id")
-    return SourceConfig(
-        name=name, type=stype, key=key, transform=transform, allow_empty=allow_empty, options=raw
-    )
+    return SourceConfig(name=name, type=stype, key=key, transform=transform, options=raw)
 
 
 def parse_config(data: dict[str, Any]) -> IngestConfig:

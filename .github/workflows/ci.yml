@@ -5,8 +5,10 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+
 env:
-  AIRFLOW_VERSION: "3.3.2"
   PYTHON_VERSION: "3.13"
 
 jobs:
@@ -14,6 +16,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      # The Airflow version is pinned once, in the Dockerfile.
+      - name: Read the Airflow version from the Dockerfile
+        run: echo "AIRFLOW_VERSION=$(sed -n 's/^ARG AIRFLOW_VERSION=//p' Dockerfile | head -1)" >> "$GITHUB_ENV"
 
       - uses: actions/setup-python@v5
         with:
@@ -23,7 +29,7 @@ jobs:
             requirements.txt
             requirements-dev.txt
 
-      # Same Airflow + constraints as the Docker image, so CI tests what actually runs.
+      # Same Airflow and constraints as the Docker image, so CI tests what actually runs.
       - name: Install Airflow, providers and dev tools
         run: |
           pip install "apache-airflow==${AIRFLOW_VERSION}" \

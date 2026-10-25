@@ -33,7 +33,8 @@ def staging_root() -> Path:
 
 
 def run_dir(run_id: str, root: Path | None = None) -> Path:
-    safe = re.sub(r"[^A-Za-z0-9_.-]+", "_", run_id)
+    # Strip dots so a run id like ".." can never resolve outside the staging root.
+    safe = re.sub(r"[^A-Za-z0-9_.-]+", "_", run_id).strip(".") or "run"
     return (root or staging_root()) / safe
 
 
@@ -56,6 +57,8 @@ def run_extract(
     root: Path | None = None,
 ) -> dict[str, Any]:
     df = EXTRACTORS[src.type](resolve(src.options))
+    if df.empty:
+        raise DataQualityError(f"{src.name}: source returned 0 rows")
     path = run_dir(run_id, root) / f"{src.name}.raw.parquet"
     _write_parquet(df, path)
     return {"source": src.name, "raw_path": str(path), "rows_extracted": len(df)}
@@ -104,7 +107,6 @@ def run_check(
         rows_staged=stats["row_count"],
         null_key_rows=stats["null_key_rows"],
         duplicate_key_groups=stats["duplicate_key_groups"],
-        allow_empty=src.allow_empty,
     )
     bq.write_audit(
         client,

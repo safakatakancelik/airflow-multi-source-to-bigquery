@@ -20,11 +20,14 @@ from airflow.exceptions import AirflowFailException
 from airflow.sdk import Asset, dag, get_current_context, task, task_group
 
 from ingest import bq, pipeline
-from ingest.config import SourceConfig, load_config, resolve_destination
+from ingest.config import SourceConfig, load_config, resolve, resolve_destination
 
 log = logging.getLogger(__name__)
 CONFIG = load_config()
 DEST = CONFIG.destination
+DAG_ID = "ingest_all_sources"
+# Resolved at parse time only so the Asset name shows the real dataset, not a ${VAR} placeholder.
+DATASET = resolve(DEST.dataset)
 
 
 def notify_failure(context) -> None:
@@ -47,7 +50,10 @@ def source_pipeline(src: SourceConfig):
         @task(task_id="extract")
         def extract() -> dict:
             run_id, _, _ = _ctx()
-            return pipeline.run_extract(src, run_id=run_id)
+            try:
+                return pipeline.run_extract(src, run_id=run_id)
+            except pipeline.DataQualityError as exc:
+                raise AirflowFailException(str(exc)) from exc  # an empty source will not fix itself
 
         @task(task_id="transform")
         def transform(manifest: dict) -> dict:
@@ -76,15 +82,13 @@ def source_pipeline(src: SourceConfig):
                     manifest,
                     bq.make_client(dest),
                     run_id=run_id,
-                    dag_id="ingest_all_sources",
+                    dag_id=DAG_ID,
                     try_number=try_number,
                 )
             except pipeline.DataQualityError as exc:
                 raise AirflowFailException(str(exc)) from exc  # retrying cannot fix bad data
 
-        @task(
-            task_id="publish", outlets=[Asset(name=f"bigquery.{DEST.dataset}.{src.target_table}")]
-        )
+        @task(task_id="publish", outlets=[Asset(name=f"bigquery.{DATASET}.{src.target_table}")])
         def publish(manifest: dict) -> dict:
             _, _, load_date = _ctx()
             dest = resolve_destination(DEST)
@@ -98,7 +102,7 @@ def source_pipeline(src: SourceConfig):
 
 
 @dag(
-    dag_id="ingest_all_sources",
+    dag_id=DAG_ID,
     schedule=None,  # triggered manually; this project demonstrates the pattern, not a cron job
     start_date=dt.datetime(2026, 1, 1, tzinfo=dt.UTC),
     catchup=False,
@@ -109,7 +113,7 @@ def source_pipeline(src: SourceConfig):
         "retry_delay": dt.timedelta(seconds=20),
         "on_failure_callback": notify_failure,
     },
-    tags=["ingestion", "bigquery", "portfolio"],
+    tags=["ingestion", "bigquery"],
     doc_md=__doc__,
 )
 def ingest_all_sources():

@@ -1,19 +1,14 @@
-# Secrets and local state — never commit these
+# Secrets: never commit these
 .env
 secrets/*
 !secrets/.gitkeep
-*.json.key
 
-# Airflow runtime
+# Local state
 logs/
-plugins/
-airflow.cfg
-airflow.db
-webserver_config.py
-
-# Python
 .venv/
 __pycache__/
-*.pyc
 .pytest_cache/
 .ruff_cache/
+
+# Personal notes
+TAKEAWAYS_AND_FOCUS.md
