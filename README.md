@@ -1,6 +1,6 @@
 # Airflow multi-source to BigQuery
 
-[![CI](https://github.com/safakatakancelik/airflow-connectors-to-bigquery/actions/workflows/ci.yml/badge.svg)](https://github.com/safakatakancelik/airflow-connectors-to-bigquery/actions/workflows/ci.yml)
+[![CI](https://github.com/safakatakancelik/airflow-multi-source-to-bigquery/actions/workflows/ci.yml/badge.svg)](https://github.com/safakatakancelik/airflow-multi-source-to-bigquery/actions/workflows/ci.yml)
 
 Config-driven Airflow DAG that ingests different source types (REST API, Postgres, MongoDB, S3, CSV) into BigQuery. Idempotent loads, data-quality gate, audit table, tests and CI.
 
@@ -68,8 +68,8 @@ docker-compose.yaml        Airflow with LocalExecutor and Postgres (version pinn
 
 1. **Clone and create `.env`.** The script copies `.env.example` to `.env` and generates the local Airflow secrets:
    ```bash
-   git clone https://github.com/safakatakancelik/airflow-connectors-to-bigquery.git
-   cd airflow-connectors-to-bigquery
+   git clone https://github.com/safakatakancelik/airflow-multi-source-to-bigquery.git
+   cd airflow-multi-source-to-bigquery
    ./scripts/init-env.sh
    ```
 2. **BigQuery.** Create a Google Cloud project and a service account with the *BigQuery Data Editor* and *BigQuery Job User* roles. Save its JSON key as `secrets/gcp-sa.json`, then set `GCP_PROJECT_ID` and the connection in `.env`.
