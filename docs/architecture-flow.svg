@@ -35,19 +35,19 @@
 <rect x="495" y="226" width="240" height="54" rx="8" fill="#d1fae5" stroke="#6ee7b7"/>
 <text x="509" y="249" font-size="14" font-weight="700" fill="#064e3b" font-family="ui-monospace, Menlo, Consolas, monospace">transform</text>
 <text x="509" y="268" font-size="12" fill="#047857">clean names, cast types, add metadata</text>
-<rect x="495" y="350" width="240" height="54" rx="8" fill="#d1fae5" stroke="#6ee7b7"/>
-<text x="509" y="373" font-size="14" font-weight="700" fill="#064e3b" font-family="ui-monospace, Menlo, Consolas, monospace">load_staging</text>
-<text x="509" y="392" font-size="12" fill="#047857">upload to stg_&lt;source&gt;</text>
-<rect x="495" y="426" width="240" height="54" rx="8" fill="#d1fae5" stroke="#6ee7b7"/>
-<text x="509" y="449" font-size="14" font-weight="700" fill="#064e3b" font-family="ui-monospace, Menlo, Consolas, monospace">quality_check</text>
-<text x="509" y="468" font-size="12" fill="#047857">count rows, check keys</text>
-<rect x="495" y="502" width="240" height="54" rx="8" fill="#d1fae5" stroke="#6ee7b7"/>
-<text x="509" y="525" font-size="14" font-weight="700" fill="#064e3b" font-family="ui-monospace, Menlo, Consolas, monospace">publish</text>
-<text x="509" y="544" font-size="12" fill="#047857">copy stg into raw's daily partition</text>
+<rect x="495" y="302" width="240" height="54" rx="8" fill="#d1fae5" stroke="#6ee7b7"/>
+<text x="509" y="325" font-size="14" font-weight="700" fill="#064e3b" font-family="ui-monospace, Menlo, Consolas, monospace">load_staging</text>
+<text x="509" y="344" font-size="12" fill="#047857">upload to stg_&lt;source&gt;</text>
+<rect x="495" y="378" width="240" height="54" rx="8" fill="#d1fae5" stroke="#6ee7b7"/>
+<text x="509" y="401" font-size="14" font-weight="700" fill="#064e3b" font-family="ui-monospace, Menlo, Consolas, monospace">quality_check</text>
+<text x="509" y="420" font-size="12" fill="#047857">count rows, check keys</text>
+<rect x="495" y="454" width="240" height="54" rx="8" fill="#d1fae5" stroke="#6ee7b7"/>
+<text x="509" y="477" font-size="14" font-weight="700" fill="#064e3b" font-family="ui-monospace, Menlo, Consolas, monospace">publish</text>
+<text x="509" y="496" font-size="12" fill="#047857">copy stg into raw's daily partition</text>
 <line x1="615.0" y1="204" x2="615.0" y2="223" stroke="#047857" stroke-width="1.4" marker-end="url(#arrow)"/>
-<line x1="615.0" y1="280" x2="615.0" y2="347" stroke="#047857" stroke-width="1.4" marker-end="url(#arrow)"/>
-<line x1="615.0" y1="404" x2="615.0" y2="423" stroke="#047857" stroke-width="1.4" marker-end="url(#arrow)"/>
-<line x1="615.0" y1="480" x2="615.0" y2="499" stroke="#047857" stroke-width="1.4" marker-end="url(#arrow)"/>
+<line x1="615.0" y1="280" x2="615.0" y2="299" stroke="#047857" stroke-width="1.4" marker-end="url(#arrow)"/>
+<line x1="615.0" y1="356" x2="615.0" y2="375" stroke="#047857" stroke-width="1.4" marker-end="url(#arrow)"/>
+<line x1="615.0" y1="432" x2="615.0" y2="451" stroke="#047857" stroke-width="1.4" marker-end="url(#arrow)"/>
 <path d="M370,105.0 C420,105.0 435,177.0 492,177.0" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
 <path d="M370,213.0 C420,213.0 435,177.0 492,177.0" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
 <path d="M370,321.0 C420,321.0 435,177.0 492,177.0" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
@@ -65,7 +65,7 @@
 <rect x="888" y="388" width="264" height="132" rx="10" fill="#ffffff" stroke="#93c5fd"/>
 <text x="904" y="416" font-size="14" font-weight="700" fill="#1e3a8a" font-family="ui-monospace, Menlo, Consolas, monospace">raw_&lt;source&gt;  ×5</text>
 <text x="904" y="436" font-size="12.5" font-weight="600" fill="#1d4ed8">Published tables</text><text x="904" y="460" font-size="12.5" fill="#334155">One partition per load date.</text><text x="904" y="478" font-size="12.5" fill="#334155">Re-running a day overwrites it,</text><text x="904" y="496" font-size="12.5" fill="#334155">so rows are never duplicated.</text>
-<path d="M735,377.0 C795,377.0 810,166 884,166" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
-<path d="M735,453.0 C795,453.0 810,310 884,310" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
-<path d="M735,529.0 C795,529.0 810,454 884,454" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M735,329.0 C795,329.0 810,166 884,166" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M735,405.0 C795,405.0 810,310 884,310" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M735,481.0 C795,481.0 810,454 884,454" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
 </svg>
