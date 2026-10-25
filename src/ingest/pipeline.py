@@ -44,13 +44,6 @@ def load_date_for(logical_date: dt.datetime | None, run_after: dt.datetime | Non
     return moment.astimezone(dt.UTC).date()
 
 
-def maybe_inject_failure(source: str, try_number: int, switch: str | None) -> None:
-    """Demo chaos switch: when the Airflow Variable ``demo_fail_first_attempt`` names this source,
-    its first attempt fails so a retry can be shown succeeding."""
-    if switch and switch == source and try_number <= 1:
-        raise RuntimeError(f"Injected demo failure for {source!r} on attempt {try_number}")
-
-
 def _write_parquet(df: pd.DataFrame, path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     df.to_parquet(path, index=False, coerce_timestamps="us", allow_truncated_timestamps=True)
@@ -60,11 +53,8 @@ def run_extract(
     src: SourceConfig,
     *,
     run_id: str,
-    try_number: int = 1,
-    fail_switch: str | None = None,
     root: Path | None = None,
 ) -> dict[str, Any]:
-    maybe_inject_failure(src.name, try_number, fail_switch)
     df = EXTRACTORS[src.type](resolve(src.options))
     path = run_dir(run_id, root) / f"{src.name}.raw.parquet"
     _write_parquet(df, path)

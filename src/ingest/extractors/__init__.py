@@ -16,13 +16,6 @@ import pandas as pd
 Extractor = Callable[[dict[str, Any]], pd.DataFrame]
 
 
-def databricks_sql(opts: dict[str, Any]) -> pd.DataFrame:
-    from airflow.providers.databricks.hooks.databricks_sql import DatabricksSqlHook
-
-    hook = DatabricksSqlHook(databricks_conn_id=opts["conn_id"], http_path=opts["http_path"])
-    return hook.get_df(opts["query"], df_type="pandas")
-
-
 def postgres(opts: dict[str, Any]) -> pd.DataFrame:
     from airflow.providers.postgres.hooks.postgres import PostgresHook
 
@@ -103,7 +96,6 @@ def rest_api(opts: dict[str, Any]) -> pd.DataFrame:
 
 
 EXTRACTORS: dict[str, Extractor] = {
-    "databricks_sql": databricks_sql,
     "postgres": postgres,
     "mongo": mongo,
     "s3_file": s3_file,

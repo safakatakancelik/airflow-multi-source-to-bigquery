@@ -20,7 +20,6 @@ _ENV_RE = re.compile(r"\$\{([A-Za-z_][A-Za-z0-9_]*)(?::-([^}]*))?\}")
 # Options each extractor needs. Kept here (not in the extractor modules) so that validating the
 # config never imports Airflow providers.
 REQUIRED_OPTIONS: dict[str, list[str]] = {
-    "databricks_sql": ["conn_id", "http_path", "query"],
     "rest_api": ["conn_id", "endpoint"],
     "postgres": ["conn_id", "query"],
     "mongo": ["conn_id", "database", "collection"],

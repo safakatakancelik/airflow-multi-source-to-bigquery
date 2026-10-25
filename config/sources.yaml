@@ -17,15 +17,7 @@ destination:
   staging_expiration_days: 7
 
 sources:
-  # 1. Databricks (Delta table in your lakehouse) ------------------------------------------
-  - name: databricks_job_postings
-    type: databricks_sql
-    conn_id: databricks_default
-    http_path: ${DATABRICKS_HTTP_PATH}
-    query: SELECT * FROM ${DATABRICKS_SOURCE_TABLE} LIMIT 5000
-    key: []   # set to the table's primary key column(s) to enable NULL/duplicate-key checks
-
-  # 2. Public REST API (no auth, follows the `next` link across pages) ----------------------
+  # 1. Public REST API (no auth, follows the `next` link across pages) ----------------------
   - name: pokeapi_pokemon
     type: rest_api
     conn_id: public_api_pokeapi
@@ -36,7 +28,7 @@ sources:
     max_pages: 3
     key: [name]
 
-  # 3. Supabase (Postgres, relational join of songs -> artists / genres) ------------------
+  # 2. Supabase (Postgres, relational join of songs -> artists / genres) ------------------
   - name: supabase_songs
     type: postgres
     conn_id: supabase_default
@@ -48,7 +40,7 @@ sources:
       JOIN genres g ON g.id = s.genre_id
     key: [song_id]
 
-  # 4. MongoDB Atlas (nested playlist documents) --------------------------------------------
+  # 3. MongoDB Atlas (nested playlist documents) --------------------------------------------
   - name: mongo_playlists
     type: mongo
     conn_id: mongo_default
@@ -58,7 +50,7 @@ sources:
     transform:
       cast: {created_year: int}
 
-  # 5. Amazon S3 (object storage; a Parquet object in your own bucket) ---------------------
+  # 4. Amazon S3 (object storage; a Parquet object in your own bucket) ---------------------
   - name: s3_song_streams
     type: s3_file
     conn_id: aws_default
@@ -69,7 +61,7 @@ sources:
     transform:
       cast: {chart_date: date}
 
-  # 6. Public CSV over HTTPS (S&P 500 constituents, public domain) -----------------------
+  # 5. Public CSV over HTTPS (S&P 500 constituents, public domain) -----------------------
   - name: https_sp500_companies
     type: http_file
     url: ${HTTPS_CSV_URL:-https://raw.githubusercontent.com/datasets/s-and-p-500-companies/main/data/constituents.csv}

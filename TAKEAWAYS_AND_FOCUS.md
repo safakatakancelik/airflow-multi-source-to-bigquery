@@ -31,7 +31,7 @@ Not part of the reviewer-facing README. Decide before going public whether to ke
 - **Free-tier traps:** Supabase's direct DB host is IPv6-only, so use the session pooler; Google service accounts need explicit roles; S3 needs an AWS account.
 - **pandas 3 changes behaviour:** missing values are `NaN` not `None`; the default string dtype is `str`. Tests must use `pd.isna`.
 - **Parquet timestamps:** coerce to microseconds before loading into BigQuery.
-- **Mocked tests ≠ working integration.** 61 tests pass, but BigQuery/Databricks/Supabase/Mongo/S3 paths are only proven by a real run. Expect first-run fixes.
+- **Mocked tests ≠ working integration.** 61 tests pass, but BigQuery/Supabase/Mongo/S3 paths are only proven by a real run. Expect first-run fixes.
 - **Public-repo hygiene:** audit history (not just current files), git-ignore `.env`/keys, keep the config to `${VAR}` placeholders, and add a test that fails on leaks. Security that isn't automated decays.
 - **Tooling gotchas:** a push touching `.github/workflows` needs the token's *Workflows* permission; reading CI results needs *Actions/Checks: Read*. `git checkout <file>` throws away *uncommitted* edits too.
 - **Commit identity** is public: check `user.name` / `user.email` before publishing.
@@ -97,6 +97,7 @@ No schema evolution · full-snapshot only · single-machine, in-memory · log-on
 
 | Date | Change |
 |---|---|
+| 2026-10-25 | Databricks source removed (it moves to another project) and the intentional retry-failure demo switch removed; 5 sources remain. Retries are still configured. |
 | 2026-10-25 | Seed data switched to a music theme (genres/artists/songs in Supabase, nested playlists in Mongo, daily song streams as Parquet in S3); SQL verified against real Postgres. |
 | 2026-10-25 | Created. Covers: config-driven DAG, S3 replacing Google Sheets, public CSV + Parquet-on-S3 sources, secret-guard tests. |
 

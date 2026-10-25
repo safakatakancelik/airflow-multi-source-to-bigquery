@@ -12,7 +12,6 @@ SELF = Path(__file__).resolve()
 # Credential-shaped strings. Obvious placeholders (XXXX, user:pass@) are allowed.
 PATTERNS = {
     "AWS access key": r"AKIA[0-9A-Z]{16}",
-    "Databricks token": r"dapi[0-9a-f]{20,}",
     "private key": r"BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY",
     "GitHub token": r"gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}",
     "JWT": r"eyJ[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{10,}",

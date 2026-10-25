@@ -1,6 +1,6 @@
 # Multi-source ingestion with Apache Airflow → BigQuery
 
-One config-driven Airflow DAG that moves data from **six different kinds of source** into
+One config-driven Airflow DAG that moves data from **five different kinds of source** into
 **BigQuery**, with retries, an idempotent load, a data-quality gate and an audit trail.
 
 It is a single manually-triggered DAG on purpose: the goal is to show the *pattern* working end to
@@ -14,7 +14,6 @@ end, not to run on a cron. Run it, watch the graph go green.
 
 | Source | Kind | What it demonstrates |
 |---|---|---|
-| Databricks SQL warehouse | Lakehouse (Delta) | `DatabricksSqlHook`, token auth |
 | PokeAPI | Public REST API | `HttpHook`, following `next` links across pages |
 | Supabase | Postgres | `PostgresHook`, a join in the source query |
 | MongoDB Atlas | Documents | Flattening nested sub-documents, `ObjectId` handling |
@@ -33,7 +32,7 @@ required options in `REQUIRED_OPTIONS` ([`config.py`](src/ingest/config.py)). Th
 | Docker + Docker Compose v2 | any recent | running Airflow locally |
 | Git | any | cloning |
 | Python + [uv](https://docs.astral.sh/uv/) | 3.13 | only for running the tests outside Docker |
-| Accounts (free tiers) | — | Google Cloud (BigQuery), Databricks, Supabase, MongoDB Atlas, AWS (S3) |
+| Accounts (free tiers) | — | Google Cloud (BigQuery), Supabase, MongoDB Atlas, AWS (S3) |
 
 About 3 GB of free RAM while Airflow runs.
 
@@ -54,7 +53,6 @@ About 3 GB of free RAM while Airflow runs.
 - **Staging before publishing** — nothing reaches the `raw_*` tables until it passes the quality gate.
 - **Retries** — every task retries twice; the quality check is deliberately non-retryable (`AirflowFailException`).
 - **No secrets in code** — everything sensitive is an Airflow Connection (`AIRFLOW_CONN_*` in `.env`, git-ignored). The config only names connection ids.
-- **Retry demo switch** — set the Airflow Variable `demo_fail_first_attempt` to a source name (e.g. `pokeapi_pokemon`) and that source fails its first attempt, then succeeds on retry. Useful for showing the Grid view recovering from a failure.
 - **Assets** — each `publish` task declares an Airflow Asset, so the lineage is visible in the UI.
 - **Testable core** — the pipeline logic is plain Python in [`src/ingest`](src/ingest) with Airflow imports kept inside the functions that need them, so most of it is unit-tested with no Airflow, credentials or network.
 
@@ -86,19 +84,16 @@ ordered task group per configured source, retries set, asset outlets present).
 ### What I need from you
 
 1. ~~Create the GitHub repo~~ — done. The public-CSV source needs no setup.
-2. Run `./scripts/init-env.sh`, then put **all** your real values in `.env` (git-ignored): GCP project id, Databricks
-   host/token/warehouse path/table, Supabase, Mongo, S3 bucket and keys — see `.env.example` for every variable. Put the Google
+2. Run `./scripts/init-env.sh`, then put **all** your real values in `.env` (git-ignored): GCP project id, Supabase,
+   Mongo, S3 bucket and keys — see `.env.example` for every variable. Put the Google
    service-account key at `secrets/gcp-sa.json` (also git-ignored; roles: BigQuery Data Editor + BigQuery Job User).
    Never edit real values into `config/sources.yaml`; the tests will fail if you do.
-3. Set `key:` (a column name, not a secret) for the Databricks source in `config/sources.yaml`. It is empty because the
-   table's primary key isn't known, so the NULL/duplicate-key checks are skipped until it is set.
-4. Give me the Databricks table name and the Supabase table layout if you build your own — the Supabase
-   query currently matches the seed schema in `seed/supabase_seed.sql` (table names are not secrets, so editing that query is fine).
-5. Create the S3 bucket + an IAM user with read access, and upload the seed Parquet file (see below).
+3. Supabase: the source query currently matches the seed schema in `seed/supabase_seed.sql` (table names are not secrets, so editing that query is fine).
+4. Create the S3 bucket + an IAM user with read access, and upload the seed Parquet file (see below).
 
 ### Not yet verified
 
-Everything that needs real credentials (BigQuery load / quality check / publish, Databricks, Supabase,
+Everything that needs real credentials (BigQuery load / quality check / publish, Supabase,
 MongoDB, S3) is only covered by mocked unit tests. The first real run may need small fixes.
 
 ## Run it yourself
@@ -112,7 +107,6 @@ Everything below uses free tiers; see [`.env.example`](.env.example) for each co
    - S3: upload [`seed/s3_song_streams.parquet`](seed/s3_song_streams.parquet) to your bucket at `S3_OBJECT_KEY`
      (e.g. `aws s3 cp seed/s3_song_streams.parquet s3://$S3_BUCKET/ingest-demo/song_streams.parquet`)
    - Public CSV over HTTPS: nothing to do
-   - Databricks: point `DATABRICKS_SOURCE_TABLE` at any table you can read
 3. **Start Airflow**
    ```bash
    docker compose up airflow-init

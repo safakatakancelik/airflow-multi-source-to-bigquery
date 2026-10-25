@@ -23,23 +23,14 @@ def test_every_configured_type_has_an_extractor():
     assert set(extractors.EXTRACTORS) == set(REQUIRED_OPTIONS)
 
 
-def test_sql_extractors_pass_query_to_hook(monkeypatch):
+def test_postgres_extractor_passes_query_to_hook(monkeypatch):
     hook = MagicMock()
     hook.get_df.return_value = pd.DataFrame({"a": [1]})
     fake_module(
         monkeypatch, "airflow.providers.postgres.hooks.postgres", PostgresHook=lambda **kw: hook
     )
-    fake_module(
-        monkeypatch,
-        "airflow.providers.databricks.hooks.databricks_sql",
-        DatabricksSqlHook=lambda **kw: hook,
-    )
     assert len(extractors.postgres({"conn_id": "c", "query": "select 1"})) == 1
-    assert (
-        len(extractors.databricks_sql({"conn_id": "c", "http_path": "/p", "query": "select 1"}))
-        == 1
-    )
-    assert hook.get_df.call_count == 2
+    hook.get_df.assert_called_once_with("select 1", df_type="pandas")
 
 
 def test_s3_file_reads_csv_and_parquet(monkeypatch):

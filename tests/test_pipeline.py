@@ -36,13 +36,6 @@ def test_extract_transform_round_trip(tmp_path, fake_extract):
     assert m["rows_transformed"] == 3 and {"id", "name", "_load_date"} <= set(clean.columns)
 
 
-def test_injected_failure_only_hits_named_source_first_attempt(tmp_path, fake_extract):
-    with pytest.raises(RuntimeError, match="Injected"):
-        pipeline.run_extract(SRC, run_id="r", try_number=1, fail_switch="demo", root=tmp_path)
-    assert pipeline.run_extract(SRC, run_id="r", try_number=2, fail_switch="demo", root=tmp_path)
-    assert pipeline.run_extract(SRC, run_id="r", try_number=1, fail_switch="other", root=tmp_path)
-
-
 def manifest(**over):
     return {"staging_table": "proj.ds.stg_demo", "rows_extracted": 3, "rows_transformed": 3, **over}
 

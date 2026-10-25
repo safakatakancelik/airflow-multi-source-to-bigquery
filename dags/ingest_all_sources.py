@@ -7,8 +7,7 @@ One task group per entry in ``config/sources.yaml``:
 * **Idempotent**: ``publish`` overwrites the run's daily partition; re-running never duplicates rows.
 * **Quality gate**: source vs. BigQuery row counts and NULL/duplicate keys, recorded in
   ``ingestion_audit``. A failed check blocks ``publish`` and is not retried.
-* **Retries**: transient errors retry automatically. Set the Airflow Variable
-  ``demo_fail_first_attempt`` to a source name to watch a failure retry and recover.
+* **Retries**: transient errors (network, API hiccups) retry automatically.
 * **Credentials** come from Airflow Connections only.
 """
 
@@ -18,7 +17,7 @@ import datetime as dt
 import logging
 
 from airflow.exceptions import AirflowFailException
-from airflow.sdk import Asset, Variable, dag, get_current_context, task, task_group
+from airflow.sdk import Asset, dag, get_current_context, task, task_group
 
 from ingest import bq, pipeline
 from ingest.config import SourceConfig, load_config, resolve_destination
@@ -47,11 +46,8 @@ def source_pipeline(src: SourceConfig):
     def _group():
         @task(task_id="extract")
         def extract() -> dict:
-            run_id, try_number, _ = _ctx()
-            switch = Variable.get("demo_fail_first_attempt", default=None)
-            return pipeline.run_extract(
-                src, run_id=run_id, try_number=try_number, fail_switch=switch
-            )
+            run_id, _, _ = _ctx()
+            return pipeline.run_extract(src, run_id=run_id)
 
         @task(task_id="transform")
         def transform(manifest: dict) -> dict:
