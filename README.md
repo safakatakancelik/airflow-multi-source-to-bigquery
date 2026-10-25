@@ -8,7 +8,7 @@ The focus of this project is moving data using Airflow across different sources.
 
 ## Demo video
 
-> **Demo video coming soon.**
+[![Demo video: Airflow DAG ingesting five source types into BigQuery](https://img.youtube.com/vi/vZmEvGCyg8U/maxresdefault.jpg)](https://youtu.be/vZmEvGCyg8U)
 
 ## Architecture
 
