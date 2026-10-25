@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/safakatakancelik/airflow-connectors-to-bigquery/actions/workflows/ci.yml/badge.svg)](https://github.com/safakatakancelik/airflow-connectors-to-bigquery/actions/workflows/ci.yml)
 
-Config-driven Airflow DAG that ingests five source types (REST API, Postgres, MongoDB, S3, CSV) into BigQuery. Idempotent loads, data-quality gate, audit table, tests and CI.
+Config-driven Airflow DAG that ingests different source types (REST API, Postgres, MongoDB, S3, CSV) into BigQuery. Idempotent loads, data-quality gate, audit table, tests and CI.
 
 The focus of this project is moving data using Airflow across different sources.
 
