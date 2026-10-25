@@ -97,6 +97,7 @@ No schema evolution · full-snapshot only · single-machine, in-memory · log-on
 
 | Date | Change |
 |---|---|
+| 2026-10-25 | Seed data switched to a music theme (genres/artists/songs in Supabase, nested playlists in Mongo, daily song streams as Parquet in S3); SQL verified against real Postgres. |
 | 2026-10-25 | Created. Covers: config-driven DAG, S3 replacing Google Sheets, public CSV + Parquet-on-S3 sources, secret-guard tests. |
 
 > **Rule for updating:** whenever the code, design or a decision changes, add a row above and amend the relevant section.

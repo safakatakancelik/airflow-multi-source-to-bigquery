@@ -36,36 +36,38 @@ sources:
     max_pages: 3
     key: [name]
 
-  # 3. Supabase (Postgres, relational join) -------------------------------------------------
-  - name: supabase_job_postings
+  # 3. Supabase (Postgres, relational join of songs -> artists / genres) ------------------
+  - name: supabase_songs
     type: postgres
     conn_id: supabase_default
     query: |
-      SELECT p.id, p.title, p.seniority, p.salary_min, p.salary_max, p.remote, p.posted_at,
-             e.name AS employer_name, e.industry, e.hq_city
-      FROM job_postings p JOIN employers e ON e.id = p.employer_id
-    key: [id]
+      SELECT s.id AS song_id, s.title, s.duration_seconds, s.release_year, s.explicit,
+             a.name AS artist_name, a.country AS artist_country, g.name AS genre
+      FROM songs s
+      JOIN artists a ON a.id = s.artist_id
+      JOIN genres g ON g.id = s.genre_id
+    key: [song_id]
 
-  # 4. MongoDB Atlas (nested documents) -----------------------------------------------------
-  - name: mongo_companies
+  # 4. MongoDB Atlas (nested playlist documents) --------------------------------------------
+  - name: mongo_playlists
     type: mongo
     conn_id: mongo_default
     database: ${MONGO_DATABASE:-ingest_demo}
-    collection: ${MONGO_COLLECTION:-companies}
+    collection: ${MONGO_COLLECTION:-playlists}
     key: [id]
     transform:
-      cast: {founded_year: int}
+      cast: {created_year: int}
 
-  # 5. Amazon S3 (object storage; a Parquet object in your own bucket) ----
-  - name: s3_skills_demand
+  # 5. Amazon S3 (object storage; a Parquet object in your own bucket) ---------------------
+  - name: s3_song_streams
     type: s3_file
     conn_id: aws_default
     bucket: ${S3_BUCKET}
-    object_key: ${S3_OBJECT_KEY:-ingest-demo/skills_demand.parquet}
+    object_key: ${S3_OBJECT_KEY:-ingest-demo/song_streams.parquet}
     format: parquet
-    key: [skill]
+    key: [stream_id]
     transform:
-      cast: {demand_score: float, updated_on: date}
+      cast: {chart_date: date}
 
   # 6. Public CSV over HTTPS (S&P 500 constituents, public domain) -----------------------
   - name: https_sp500_companies

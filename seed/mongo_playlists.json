@@ -1,0 +1,891 @@
+[
+  {
+    "_id": "pl_001",
+    "name": "Faded Picks 1",
+    "owner": {
+      "displayName": "user_559",
+      "country": "Germany"
+    },
+    "tags": [
+      "workout"
+    ],
+    "songIds": [
+      14,
+      20,
+      67,
+      83,
+      88,
+      90,
+      93
+    ],
+    "stats": {
+      "followers": 29971,
+      "totalPlays": 178365
+    },
+    "isPublic": true,
+    "createdYear": 2018
+  },
+  {
+    "_id": "pl_002",
+    "name": "Midnight Sessions 2",
+    "owner": {
+      "displayName": "user_338",
+      "country": "USA"
+    },
+    "tags": [
+      "study",
+      "focus",
+      "workout"
+    ],
+    "songIds": [
+      10,
+      13,
+      15,
+      25,
+      29,
+      33,
+      34,
+      39,
+      50,
+      56,
+      68,
+      75,
+      82,
+      90,
+      98
+    ],
+    "stats": {
+      "followers": 39391,
+      "totalPlays": 2515
+    },
+    "isPublic": true,
+    "createdYear": 2022
+  },
+  {
+    "_id": "pl_003",
+    "name": "Wild Radio 3",
+    "owner": {
+      "displayName": "user_423",
+      "country": "Germany"
+    },
+    "tags": [
+      "road-trip",
+      "workout"
+    ],
+    "songIds": [
+      3,
+      4,
+      8,
+      25,
+      32,
+      40,
+      53,
+      54,
+      64,
+      83,
+      84,
+      87,
+      91
+    ],
+    "stats": {
+      "followers": 5314,
+      "totalPlays": 539605
+    },
+    "isPublic": true,
+    "createdYear": 2024
+  },
+  {
+    "_id": "pl_004",
+    "name": "Paper Sessions 4",
+    "owner": {
+      "displayName": "user_604",
+      "country": "USA"
+    },
+    "tags": [
+      "focus",
+      "party",
+      "study"
+    ],
+    "songIds": [
+      1,
+      9,
+      25,
+      26,
+      27,
+      29,
+      30,
+      38,
+      40,
+      51,
+      60,
+      64,
+      65,
+      95,
+      99
+    ],
+    "stats": {
+      "followers": 17368,
+      "totalPlays": 1594922
+    },
+    "isPublic": false,
+    "createdYear": 2019
+  },
+  {
+    "_id": "pl_005",
+    "name": "Hollow Picks 5",
+    "owner": {
+      "displayName": "user_724",
+      "country": "Turkey"
+    },
+    "tags": [
+      "party"
+    ],
+    "songIds": [
+      4,
+      7,
+      8,
+      19,
+      24,
+      28,
+      51,
+      54,
+      77,
+      86,
+      91
+    ],
+    "stats": {
+      "followers": 25776,
+      "totalPlays": 943067
+    },
+    "isPublic": false,
+    "createdYear": 2023
+  },
+  {
+    "_id": "pl_006",
+    "name": "Golden Mix 6",
+    "owner": {
+      "displayName": "user_269",
+      "country": "Japan"
+    },
+    "tags": [
+      "workout"
+    ],
+    "songIds": [
+      1,
+      5,
+      11,
+      14,
+      22,
+      40,
+      43,
+      48,
+      49,
+      57,
+      60,
+      68,
+      86,
+      93,
+      96
+    ],
+    "stats": {
+      "followers": 18337,
+      "totalPlays": 169472
+    },
+    "isPublic": true,
+    "createdYear": 2019
+  },
+  {
+    "_id": "pl_007",
+    "name": "Faded Sessions 7",
+    "owner": {
+      "displayName": "user_489",
+      "country": "Japan"
+    },
+    "tags": [
+      "party",
+      "chill"
+    ],
+    "songIds": [
+      26,
+      48,
+      61,
+      70,
+      91
+    ],
+    "stats": {
+      "followers": 29251,
+      "totalPlays": 404905
+    },
+    "isPublic": true,
+    "createdYear": 2025
+  },
+  {
+    "_id": "pl_008",
+    "name": "Midnight Picks 8",
+    "owner": {
+      "displayName": "user_353",
+      "country": "Sweden"
+    },
+    "tags": [
+      "party"
+    ],
+    "songIds": [
+      8,
+      9,
+      25,
+      33,
+      60
+    ],
+    "stats": {
+      "followers": 48974,
+      "totalPlays": 131909
+    },
+    "isPublic": false,
+    "createdYear": 2023
+  },
+  {
+    "_id": "pl_009",
+    "name": "Paper Radio 9",
+    "owner": {
+      "displayName": "user_443",
+      "country": "USA"
+    },
+    "tags": [
+      "study",
+      "focus"
+    ],
+    "songIds": [
+      1,
+      4,
+      9,
+      30,
+      39,
+      77,
+      82,
+      93,
+      97
+    ],
+    "stats": {
+      "followers": 7029,
+      "totalPlays": 996643
+    },
+    "isPublic": false,
+    "createdYear": 2025
+  },
+  {
+    "_id": "pl_010",
+    "name": "Velvet Radio 10",
+    "owner": {
+      "displayName": "user_540",
+      "country": "Canada"
+    },
+    "tags": [
+      "party"
+    ],
+    "songIds": [
+      2,
+      20,
+      39,
+      78,
+      89,
+      95,
+      99
+    ],
+    "stats": {
+      "followers": 15475,
+      "totalPlays": 687546
+    },
+    "isPublic": false,
+    "createdYear": 2025
+  },
+  {
+    "_id": "pl_011",
+    "name": "Paper Mix 11",
+    "owner": {
+      "displayName": "user_624",
+      "country": "Germany"
+    },
+    "tags": [
+      "workout",
+      "study"
+    ],
+    "songIds": [
+      5,
+      9,
+      10,
+      14,
+      21,
+      42,
+      55,
+      62,
+      70,
+      71,
+      84
+    ],
+    "stats": {
+      "followers": 17359,
+      "totalPlays": 1309984
+    },
+    "isPublic": true,
+    "createdYear": 2019
+  },
+  {
+    "_id": "pl_012",
+    "name": "Velvet Picks 12",
+    "owner": {
+      "displayName": "user_826",
+      "country": "Canada"
+    },
+    "tags": [
+      "workout"
+    ],
+    "songIds": [
+      31,
+      54,
+      59,
+      69,
+      80,
+      87,
+      96
+    ],
+    "stats": {
+      "followers": 43543,
+      "totalPlays": 1593026
+    },
+    "isPublic": true,
+    "createdYear": 2022
+  },
+  {
+    "_id": "pl_013",
+    "name": "Silent Radio 13",
+    "owner": {
+      "displayName": "user_680",
+      "country": "Brazil"
+    },
+    "tags": [
+      "focus",
+      "study"
+    ],
+    "songIds": [
+      20,
+      24,
+      25,
+      31,
+      32,
+      37,
+      57,
+      75
+    ],
+    "stats": {
+      "followers": 21386,
+      "totalPlays": 136004
+    },
+    "isPublic": true,
+    "createdYear": 2021
+  },
+  {
+    "_id": "pl_014",
+    "name": "Faded Sessions 14",
+    "owner": {
+      "displayName": "user_765",
+      "country": "UK"
+    },
+    "tags": [
+      "party",
+      "chill",
+      "road-trip"
+    ],
+    "songIds": [
+      6,
+      30,
+      48,
+      58,
+      61
+    ],
+    "stats": {
+      "followers": 19246,
+      "totalPlays": 488511
+    },
+    "isPublic": true,
+    "createdYear": 2021
+  },
+  {
+    "_id": "pl_015",
+    "name": "Hollow Sessions 15",
+    "owner": {
+      "displayName": "user_176",
+      "country": "Japan"
+    },
+    "tags": [
+      "workout",
+      "party",
+      "focus"
+    ],
+    "songIds": [
+      1,
+      5,
+      6,
+      14,
+      19,
+      27,
+      28,
+      33,
+      44,
+      45,
+      48,
+      77,
+      80,
+      82,
+      91
+    ],
+    "stats": {
+      "followers": 2505,
+      "totalPlays": 1257181
+    },
+    "isPublic": false,
+    "createdYear": 2021
+  },
+  {
+    "_id": "pl_016",
+    "name": "Midnight Radio 16",
+    "owner": {
+      "displayName": "user_518",
+      "country": "Japan"
+    },
+    "tags": [
+      "road-trip"
+    ],
+    "songIds": [
+      5,
+      9,
+      10,
+      13,
+      27,
+      53,
+      62,
+      64,
+      71
+    ],
+    "stats": {
+      "followers": 25906,
+      "totalPlays": 1392664
+    },
+    "isPublic": true,
+    "createdYear": 2026
+  },
+  {
+    "_id": "pl_017",
+    "name": "Golden Sessions 17",
+    "owner": {
+      "displayName": "user_507",
+      "country": "Brazil"
+    },
+    "tags": [
+      "focus",
+      "study"
+    ],
+    "songIds": [
+      3,
+      7,
+      26,
+      40,
+      46,
+      47,
+      54,
+      73,
+      83,
+      96,
+      99
+    ],
+    "stats": {
+      "followers": 25606,
+      "totalPlays": 1526893
+    },
+    "isPublic": true,
+    "createdYear": 2018
+  },
+  {
+    "_id": "pl_018",
+    "name": "Velvet Sessions 18",
+    "owner": {
+      "displayName": "user_533",
+      "country": "UK"
+    },
+    "tags": [
+      "party"
+    ],
+    "songIds": [
+      2,
+      7,
+      12,
+      17,
+      19,
+      21,
+      47,
+      51,
+      59,
+      71,
+      74,
+      80,
+      83,
+      99
+    ],
+    "stats": {
+      "followers": 24303,
+      "totalPlays": 1546223
+    },
+    "isPublic": true,
+    "createdYear": 2020
+  },
+  {
+    "_id": "pl_019",
+    "name": "Paper Radio 19",
+    "owner": {
+      "displayName": "user_265",
+      "country": "Turkey"
+    },
+    "tags": [
+      "chill"
+    ],
+    "songIds": [
+      6,
+      7,
+      17,
+      26,
+      39,
+      41,
+      62,
+      63,
+      78,
+      82,
+      97
+    ],
+    "stats": {
+      "followers": 25421,
+      "totalPlays": 181072
+    },
+    "isPublic": false,
+    "createdYear": 2020
+  },
+  {
+    "_id": "pl_020",
+    "name": "Electric Picks 20",
+    "owner": {
+      "displayName": "user_729",
+      "country": "Germany"
+    },
+    "tags": [
+      "workout",
+      "road-trip"
+    ],
+    "songIds": [
+      6,
+      16,
+      20,
+      21,
+      46,
+      50,
+      52,
+      67
+    ],
+    "stats": {
+      "followers": 16191,
+      "totalPlays": 1520289
+    },
+    "isPublic": false,
+    "createdYear": 2021
+  },
+  {
+    "_id": "pl_021",
+    "name": "Midnight Mix 21",
+    "owner": {
+      "displayName": "user_783",
+      "country": "Japan"
+    },
+    "tags": [
+      "party"
+    ],
+    "songIds": [
+      32,
+      40,
+      48,
+      50,
+      54,
+      55,
+      58,
+      59,
+      71,
+      75,
+      81,
+      84,
+      85,
+      100
+    ],
+    "stats": {
+      "followers": 33002,
+      "totalPlays": 919392
+    },
+    "isPublic": true,
+    "createdYear": 2018
+  },
+  {
+    "_id": "pl_022",
+    "name": "Hollow Picks 22",
+    "owner": {
+      "displayName": "user_576",
+      "country": "Germany"
+    },
+    "tags": [
+      "road-trip",
+      "party"
+    ],
+    "songIds": [
+      9,
+      14,
+      17,
+      46,
+      52,
+      56,
+      61
+    ],
+    "stats": {
+      "followers": 23942,
+      "totalPlays": 192436
+    },
+    "isPublic": false,
+    "createdYear": 2026
+  },
+  {
+    "_id": "pl_023",
+    "name": "Faded Mix 23",
+    "owner": {
+      "displayName": "user_141",
+      "country": "Turkey"
+    },
+    "tags": [
+      "study"
+    ],
+    "songIds": [
+      7,
+      11,
+      18,
+      49,
+      65,
+      66,
+      84,
+      93,
+      97,
+      100
+    ],
+    "stats": {
+      "followers": 1694,
+      "totalPlays": 1797506
+    },
+    "isPublic": true,
+    "createdYear": 2019
+  },
+  {
+    "_id": "pl_024",
+    "name": "Electric Sessions 24",
+    "owner": {
+      "displayName": "user_603",
+      "country": "Brazil"
+    },
+    "tags": [
+      "study"
+    ],
+    "songIds": [
+      9,
+      21,
+      33,
+      36,
+      42,
+      45,
+      79,
+      97
+    ],
+    "stats": {
+      "followers": 29910,
+      "totalPlays": 301192
+    },
+    "isPublic": true,
+    "createdYear": 2025
+  },
+  {
+    "_id": "pl_025",
+    "name": "Electric Radio 25",
+    "owner": {
+      "displayName": "user_730",
+      "country": "Germany"
+    },
+    "tags": [
+      "focus",
+      "chill"
+    ],
+    "songIds": [
+      21,
+      24,
+      36,
+      42,
+      49,
+      52,
+      82,
+      87
+    ],
+    "stats": {
+      "followers": 11058,
+      "totalPlays": 1661304
+    },
+    "isPublic": false,
+    "createdYear": 2019
+  },
+  {
+    "_id": "pl_026",
+    "name": "Faded Mix 26",
+    "owner": {
+      "displayName": "user_751",
+      "country": "Japan"
+    },
+    "tags": [
+      "road-trip",
+      "study"
+    ],
+    "songIds": [
+      14,
+      19,
+      33,
+      34,
+      43,
+      47,
+      48,
+      49,
+      51,
+      69,
+      74,
+      81,
+      89,
+      95
+    ],
+    "stats": {
+      "followers": 5333,
+      "totalPlays": 927631
+    },
+    "isPublic": true,
+    "createdYear": 2018
+  },
+  {
+    "_id": "pl_027",
+    "name": "Silent Radio 27",
+    "owner": {
+      "displayName": "user_417",
+      "country": "Japan"
+    },
+    "tags": [
+      "chill",
+      "study",
+      "workout"
+    ],
+    "songIds": [
+      38,
+      47,
+      54,
+      56,
+      66,
+      79,
+      81
+    ],
+    "stats": {
+      "followers": 3131,
+      "totalPlays": 276972
+    },
+    "isPublic": true,
+    "createdYear": 2018
+  },
+  {
+    "_id": "pl_028",
+    "name": "Midnight Mix 28",
+    "owner": {
+      "displayName": "user_102",
+      "country": "Japan"
+    },
+    "tags": [
+      "chill",
+      "road-trip"
+    ],
+    "songIds": [
+      18,
+      27,
+      29,
+      39,
+      47,
+      53,
+      69,
+      75,
+      76,
+      80
+    ],
+    "stats": {
+      "followers": 31123,
+      "totalPlays": 332757
+    },
+    "isPublic": true,
+    "createdYear": 2021
+  },
+  {
+    "_id": "pl_029",
+    "name": "Broken Picks 29",
+    "owner": {
+      "displayName": "user_198",
+      "country": "UK"
+    },
+    "tags": [
+      "workout",
+      "focus",
+      "party"
+    ],
+    "songIds": [
+      2,
+      8,
+      45,
+      57,
+      72,
+      75,
+      77,
+      78,
+      83
+    ],
+    "stats": {
+      "followers": 33920,
+      "totalPlays": 1538407
+    },
+    "isPublic": true,
+    "createdYear": 2020
+  },
+  {
+    "_id": "pl_030",
+    "name": "Midnight Mix 30",
+    "owner": {
+      "displayName": "user_163",
+      "country": "USA"
+    },
+    "tags": [
+      "workout",
+      "study"
+    ],
+    "songIds": [
+      2,
+      8,
+      14,
+      71,
+      79,
+      85,
+      100
+    ],
+    "stats": {
+      "followers": 12927,
+      "totalPlays": 298454
+    },
+    "isPublic": true,
+    "createdYear": 2026
+  }
+]
