@@ -70,12 +70,22 @@ def s3_file(opts: dict[str, Any]) -> pd.DataFrame:
 
 
 def rest_api(opts: dict[str, Any]) -> pd.DataFrame:
-    """GET a JSON endpoint; optionally follow a ``next`` URL field until it is empty."""
-    from airflow.providers.http.hooks.http import HttpHook
+    """GET a JSON endpoint; optionally follow a ``next`` URL field until it is empty.
 
-    hook = HttpHook(method="GET", http_conn_id=opts["conn_id"])
-    session = hook.get_conn()
-    url: str | None = hook.url_from_endpoint(opts["endpoint"])
+    Public APIs set ``base_url`` (no secret, no Airflow Connection). APIs that need credentials
+    set ``conn_id`` instead and the ``HttpHook`` supplies the host and auth from the Connection.
+    """
+    if opts.get("conn_id"):
+        from airflow.providers.http.hooks.http import HttpHook
+
+        hook = HttpHook(method="GET", http_conn_id=opts["conn_id"])
+        session = hook.get_conn()
+        url: str | None = hook.url_from_endpoint(opts["endpoint"])
+    else:
+        import requests
+
+        session = requests.Session()
+        url = opts["base_url"].rstrip("/") + "/" + opts["endpoint"].lstrip("/")
     params: dict[str, Any] | None = opts.get("params")
     records_path: str | None = opts.get("records_path")
     next_path: str | None = opts.get("next_path")

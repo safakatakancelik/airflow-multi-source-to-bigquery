@@ -97,6 +97,7 @@ No schema evolution · full-snapshot only · single-machine, in-memory · log-on
 
 | Date | Change |
 |---|---|
+| 2026-10-25 | REST source takes `base_url` in config instead of an Airflow Connection (a public API has no secret, and a missing connection caused the first PokeAPI failure). `conn_id` stays for APIs needing auth. Lesson: only use a Connection for things that are secret. |
 | 2026-10-25 | Databricks source removed (it moves to another project) and the intentional retry-failure demo switch removed; 5 sources remain. Retries are still configured. |
 | 2026-10-25 | Seed data switched to a music theme (genres/artists/songs in Supabase, nested playlists in Mongo, daily song streams as Parquet in S3); SQL verified against real Postgres. |
 | 2026-10-25 | Created. Covers: config-driven DAG, S3 replacing Google Sheets, public CSV + Parquet-on-S3 sources, secret-guard tests. |

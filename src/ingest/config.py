@@ -20,7 +20,7 @@ _ENV_RE = re.compile(r"\$\{([A-Za-z_][A-Za-z0-9_]*)(?::-([^}]*))?\}")
 # Options each extractor needs. Kept here (not in the extractor modules) so that validating the
 # config never imports Airflow providers.
 REQUIRED_OPTIONS: dict[str, list[str]] = {
-    "rest_api": ["conn_id", "endpoint"],
+    "rest_api": ["endpoint"],  # plus base_url or conn_id; see _parse_source
     "postgres": ["conn_id", "query"],
     "mongo": ["conn_id", "database", "collection"],
     "s3_file": ["conn_id", "bucket", "object_key", "format"],
@@ -115,6 +115,8 @@ def _parse_source(raw: dict[str, Any]) -> SourceConfig:
     missing = [opt for opt in REQUIRED_OPTIONS[stype] if opt not in raw]
     if missing:
         raise ConfigError(f"Source {name} ({stype}) is missing options: {missing}")
+    if stype == "rest_api" and not (raw.get("base_url") or raw.get("conn_id")):
+        raise ConfigError(f"Source {name} (rest_api) needs base_url (public API) or conn_id")
     return SourceConfig(
         name=name, type=stype, key=key, transform=transform, allow_empty=allow_empty, options=raw
     )

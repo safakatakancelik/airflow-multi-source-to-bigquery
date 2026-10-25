@@ -129,3 +129,28 @@ def test_rest_api_respects_max_pages(monkeypatch):
         }
     )
     assert len(df) == 3
+
+
+def test_rest_api_public_base_url_needs_no_connection(monkeypatch):
+    urls = []
+
+    class Session:
+        def get(self, url, params=None, timeout=None):
+            urls.append((url, params))
+            return SimpleNamespace(
+                raise_for_status=lambda: None,
+                json=lambda: {"results": [{"name": "a"}], "next": None},
+            )
+
+    monkeypatch.setattr("requests.Session", Session)
+    df = extractors.rest_api(
+        {
+            "base_url": "https://api.example/",
+            "endpoint": "/v2/items",
+            "params": {"limit": 5},
+            "records_path": "results",
+            "next_path": "next",
+        }
+    )
+    assert df["name"].tolist() == ["a"]
+    assert urls == [("https://api.example/v2/items", {"limit": 5})]

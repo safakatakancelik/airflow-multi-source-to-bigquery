@@ -20,7 +20,7 @@ sources:
   # 1. Public REST API (no auth, follows the `next` link across pages) ----------------------
   - name: pokeapi_pokemon
     type: rest_api
-    conn_id: public_api_pokeapi
+    base_url: https://pokeapi.co   # public API, no secret; use conn_id instead for APIs needing auth
     endpoint: /api/v2/pokemon
     params: {limit: 50}
     records_path: results

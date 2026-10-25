@@ -64,3 +64,12 @@ def test_resolve_env(monkeypatch):
     assert resolve({"a": ["${FOO}"]}) == {"a": ["bar"]}
     with pytest.raises(MissingEnvError):
         resolve("${NOPE}")
+
+
+def test_rest_api_needs_base_url_or_conn_id():
+    rest = {"name": "api_src", "type": "rest_api", "endpoint": "/x"}
+    with pytest.raises(ConfigError, match="base_url"):
+        parse_config(mutate(lambda d: d["sources"].__setitem__(0, dict(rest))))
+    for extra in ({"base_url": "https://a.b"}, {"conn_id": "c"}):
+        cfg = parse_config(mutate(lambda d, e=extra: d["sources"].__setitem__(0, {**rest, **e})))
+        assert cfg.sources[0].type == "rest_api"

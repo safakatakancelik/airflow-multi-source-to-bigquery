@@ -14,7 +14,7 @@ end, not to run on a cron. Run it, watch the graph go green.
 
 | Source | Kind | What it demonstrates |
 |---|---|---|
-| PokeAPI | Public REST API | `HttpHook`, following `next` links across pages |
+| PokeAPI | Public REST API | Following `next` links across pages; public, so no credentials (`base_url` in config). Authenticated APIs use `conn_id` + `HttpHook`. |
 | Supabase | Postgres | `PostgresHook`, a join in the source query |
 | MongoDB Atlas | Documents | Flattening nested sub-documents, `ObjectId` handling |
 | Amazon S3 | Object storage | `S3Hook` reading a Parquet object (also works with S3-compatible stores such as MinIO) |
