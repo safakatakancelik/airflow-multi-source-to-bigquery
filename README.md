@@ -19,7 +19,7 @@ to run on a schedule.
 
 ## Architecture
 
-![Architecture: five sources flow through Apache Airflow into BigQuery](docs/architecture.svg)
+![Architecture: five sources flow through Apache Airflow into BigQuery](docs/architecture-flow.svg)
 
 | Source | Type | Data it holds |
 |---|---|---|
@@ -96,7 +96,7 @@ uv pip install --python .venv/bin/python "apache-airflow==3.3.2" -r requirements
 | Docker with Compose v2 | any recent | running Airflow locally (about 3 GB of free RAM) |
 | Git | any | cloning |
 | Python and [uv](https://docs.astral.sh/uv/) | 3.13 | only to run the tests or seed scripts outside Docker |
-| Free-tier accounts | | Google Cloud (BigQuery), Supabase, MongoDB Atlas, AWS (S3) |
+| Accounts | | Google Cloud (BigQuery), Supabase, MongoDB Atlas, AWS (S3) |
 
 ## Quick start
 
