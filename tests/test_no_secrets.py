@@ -9,13 +9,13 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 SELF = Path(__file__).resolve()
 
-# Credential-shaped strings. Obvious placeholders (XXXX, user:pass@) are allowed.
+# Credential-shaped strings. Obvious placeholders (XXXX, USER:PASS@) are allowed, case-insensitively.
 PATTERNS = {
     "AWS access key": r"AKIA[0-9A-Z]{16}",
     "private key": r"BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY",
     "GitHub token": r"gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}",
     "JWT": r"eyJ[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{10,}",
-    "URL with password": r"[a-z+]+://[^\s:@/'\"<]+:(?!pass@|XXXX|<)[^\s@/'\"<]{4,}@[^\s'\"]+",
+    "URL with password": r"[a-z+]+://[^\s:@/'\"<]+:(?!(?i:pass|password|xxxx)@|<)[^\s@/'\"<]{4,}@[^\s'\"]+",
 }
 # Config keys whose value must be an environment placeholder, never a literal.
 ENV_ONLY_KEYS = {"project", "bucket", "http_path", "host", "password", "database", "url"}

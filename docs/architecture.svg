@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+<title>Architecture: five sources, Apache Airflow, BigQuery</title>
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker>
+</defs>
+<rect width="1200" height="600" rx="14" fill="#ffffff" stroke="#cbd5e1"/>
+<text x="30" y="40" font-size="13" font-weight="700" fill="#64748b" letter-spacing="1.5">SOURCES</text>
+<text x="475" y="40" font-size="13" font-weight="700" fill="#64748b" letter-spacing="1.5">ORCHESTRATION</text>
+<text x="880" y="40" font-size="13" font-weight="700" fill="#64748b" letter-spacing="1.5">DESTINATION</text>
+
+<rect x="30" y="58" width="340" height="90" rx="10" fill="#f1f5f9" stroke="#94a3b8"/>
+<text x="46" y="86" font-size="17" font-weight="700" fill="#0f172a">PokeAPI</text>
+<text x="46" y="110" font-size="13.5" fill="#1d4ed8" font-weight="600">Public REST API · JSON over HTTP</text>
+<text x="46" y="132" font-size="13.5" fill="#334155">Pokémon names + URLs, paginated (150 rows)</text>
+<rect x="30" y="162" width="340" height="90" rx="10" fill="#f1f5f9" stroke="#94a3b8"/>
+<text x="46" y="190" font-size="17" font-weight="700" fill="#0f172a">Supabase</text>
+<text x="46" y="214" font-size="13.5" fill="#1d4ed8" font-weight="600">Managed PostgreSQL · relational database</text>
+<text x="46" y="236" font-size="13.5" fill="#334155">Songs joined to artists + genres (100 rows)</text>
+<rect x="30" y="266" width="340" height="90" rx="10" fill="#f1f5f9" stroke="#94a3b8"/>
+<text x="46" y="294" font-size="17" font-weight="700" fill="#0f172a">MongoDB Atlas</text>
+<text x="46" y="318" font-size="13.5" fill="#1d4ed8" font-weight="600">NoSQL document database</text>
+<text x="46" y="340" font-size="13.5" fill="#334155">Nested playlist documents (30 docs)</text>
+<rect x="30" y="370" width="340" height="90" rx="10" fill="#f1f5f9" stroke="#94a3b8"/>
+<text x="46" y="398" font-size="17" font-weight="700" fill="#0f172a">Amazon S3</text>
+<text x="46" y="422" font-size="13.5" fill="#1d4ed8" font-weight="600">Object storage · Parquet file</text>
+<text x="46" y="444" font-size="13.5" fill="#334155">Daily song stream counts (200 rows)</text>
+<rect x="30" y="474" width="340" height="90" rx="10" fill="#f1f5f9" stroke="#94a3b8"/>
+<text x="46" y="502" font-size="17" font-weight="700" fill="#0f172a">GitHub raw URL</text>
+<text x="46" y="526" font-size="13.5" fill="#1d4ed8" font-weight="600">Public CSV file over HTTPS</text>
+<text x="46" y="548" font-size="13.5" fill="#334155">S&amp;P 500 company list (503 rows)</text>
+<rect x="470" y="58" width="290" height="516" rx="12" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+<text x="615.0" y="90" font-size="18" font-weight="700" fill="#065f46" text-anchor="middle">Apache Airflow</text>
+<text x="615.0" y="112" font-size="13" fill="#047857" text-anchor="middle">DAG: ingest_all_sources</text>
+<text x="615.0" y="150" font-size="13" fill="#334155" text-anchor="middle">prepare_destination</text>
+<text x="615.0" y="168" font-size="12" fill="#64748b" text-anchor="middle">creates dataset + audit table</text>
+<text x="615.0" y="198" font-size="13" fill="#64748b" text-anchor="middle">▼</text>
+<rect x="490" y="208" width="250" height="226" rx="10" fill="#ffffff" stroke="#6ee7b7"/>
+<text x="615.0" y="230" font-size="12.5" font-weight="700" fill="#065f46" text-anchor="middle">same 5 steps for each of the 5 sources</text>
+<rect x="506" y="242" width="218" height="30" rx="6" fill="#d1fae5"/>
+<text x="516" y="256" font-size="12.5" font-weight="700" fill="#064e3b" font-family="ui-monospace, Menlo, Consolas, monospace">extract</text>
+<text x="516" y="268" font-size="10.5" fill="#047857">read from the source</text>
+<rect x="506" y="280" width="218" height="30" rx="6" fill="#d1fae5"/>
+<text x="516" y="294" font-size="12.5" font-weight="700" fill="#064e3b" font-family="ui-monospace, Menlo, Consolas, monospace">transform</text>
+<text x="516" y="306" font-size="10.5" fill="#047857">clean column names, cast types</text>
+<rect x="506" y="318" width="218" height="30" rx="6" fill="#d1fae5"/>
+<text x="516" y="332" font-size="12.5" font-weight="700" fill="#064e3b" font-family="ui-monospace, Menlo, Consolas, monospace">load_staging</text>
+<text x="516" y="344" font-size="10.5" fill="#047857">load into a staging table</text>
+<rect x="506" y="356" width="218" height="30" rx="6" fill="#d1fae5"/>
+<text x="516" y="370" font-size="12.5" font-weight="700" fill="#064e3b" font-family="ui-monospace, Menlo, Consolas, monospace">quality_check</text>
+<text x="516" y="382" font-size="10.5" fill="#047857">compare counts, check keys</text>
+<rect x="506" y="394" width="218" height="30" rx="6" fill="#d1fae5"/>
+<text x="516" y="408" font-size="12.5" font-weight="700" fill="#064e3b" font-family="ui-monospace, Menlo, Consolas, monospace">publish</text>
+<text x="516" y="420" font-size="10.5" fill="#047857">overwrite that day's partition</text>
+<text x="615.0" y="458" font-size="13" fill="#64748b" text-anchor="middle">▼</text>
+<text x="615.0" y="482" font-size="13" fill="#334155" text-anchor="middle">cleanup_local_files</text>
+<text x="615.0" y="500" font-size="12" fill="#64748b" text-anchor="middle">removes temp files</text>
+<text x="615.0" y="536" font-size="12" fill="#047857" text-anchor="middle">retries · idempotent · quality gate</text>
+<text x="615.0" y="554" font-size="12" fill="#047857" text-anchor="middle">credentials only via Airflow Connections</text>
+<line x1="370" y1="103.0" x2="466" y2="103.0" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+<line x1="370" y1="207.0" x2="466" y2="207.0" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+<line x1="370" y1="311.0" x2="466" y2="311.0" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+<line x1="370" y1="415.0" x2="466" y2="415.0" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+<line x1="370" y1="519.0" x2="466" y2="519.0" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="420.0" y="89.0" font-size="11.5" fill="#475569" text-anchor="middle">extract</text>
+<rect x="870" y="58" width="300" height="516" rx="12" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+<text x="1020.0" y="90" font-size="18" font-weight="700" fill="#1e3a8a" text-anchor="middle">BigQuery</text>
+<text x="1020.0" y="112" font-size="13" fill="#1d4ed8" text-anchor="middle">dataset: ingest_demo</text>
+<rect x="888" y="138" width="264" height="128" rx="10" fill="#ffffff" stroke="#93c5fd"/>
+<text x="904" y="164" font-size="14" font-weight="700" fill="#1e3a8a" font-family="ui-monospace, Menlo, Consolas, monospace">stg_&lt;source&gt;  ×5</text>
+<text x="904" y="184" font-size="12.5" font-weight="600" fill="#1d4ed8">Staging tables</text>
+<text x="904" y="208" font-size="12.5" fill="#334155">Replaced on every run.</text>
+<text x="904" y="226" font-size="12.5" fill="#334155">Checked here before anything is published.</text>
+<text x="904" y="244" font-size="12.5" fill="#334155">Auto-expire after 7 days.</text>
+<rect x="888" y="280" width="264" height="128" rx="10" fill="#ffffff" stroke="#93c5fd"/>
+<text x="904" y="306" font-size="14" font-weight="700" fill="#1e3a8a" font-family="ui-monospace, Menlo, Consolas, monospace">raw_&lt;source&gt;  ×5</text>
+<text x="904" y="326" font-size="12.5" font-weight="600" fill="#1d4ed8">Published tables</text>
+<text x="904" y="350" font-size="12.5" fill="#334155">One partition per load date.</text>
+<text x="904" y="368" font-size="12.5" fill="#334155">Re-running a day overwrites it,</text>
+<text x="904" y="386" font-size="12.5" fill="#334155">so rows are never duplicated.</text>
+<rect x="888" y="422" width="264" height="128" rx="10" fill="#ffffff" stroke="#93c5fd"/>
+<text x="904" y="448" font-size="14" font-weight="700" fill="#1e3a8a" font-family="ui-monospace, Menlo, Consolas, monospace">ingestion_audit</text>
+<text x="904" y="468" font-size="12.5" font-weight="600" fill="#1d4ed8">Audit table</text>
+<text x="904" y="492" font-size="12.5" fill="#334155">One row per quality check:</text>
+<text x="904" y="510" font-size="12.5" fill="#334155">row counts, null/duplicate keys,</text>
+<text x="904" y="528" font-size="12.5" fill="#334155">pass or fail.</text>
+<line x1="760" y1="316.0" x2="866" y2="316.0" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="815.0" y="306.0" font-size="11.5" fill="#475569" text-anchor="middle">load</text>
+</svg>
